@@ -1,8 +1,8 @@
-import { Col, Row, Form, Button, Container, Alert } from "react-bootstrap";
-import React from 'react';
-import { connect } from 'react-redux';
+import { Col, Row, Form, Button, Container, Spinner, Alert } from "react-bootstrap"
+import React from 'react'
+import { connect } from 'react-redux'
 import { loginActionCreator } from "../actions/loginActionCreators"
-
+import { withRouter } from 'react-router-dom'
 
 /**
  * @author [Laura]
@@ -13,6 +13,8 @@ class Login extends React.Component {
         this.state = {
             email: "",
             password: "",
+            alertVisible: false,
+            alertShown: false
         }
     }
     onChange = (event) => {
@@ -36,9 +38,49 @@ class Login extends React.Component {
         alert("hello")
     }
 
+    showAlert() {
+        this.setState({ 
+            alertVisible: true,
+        }, 
+        () => {
+            window.setTimeout(() => {
+                this.setState({ 
+                    alertVisible: false,
+                    alertShown: true
+                })
+            }, 3000)
+        })
+    }
+
+    componentDidUpdate() {
+        if (this.props.isError && !this.state.alertVisible && !this.state.alertShown) {
+            this.showAlert()
+        }
+    }
+
     render() {
+        const { isFetching, isError, message } = this.props
+        let buttonContent = 'Login'
+        let disabled = false
+        if (isFetching) {
+            disabled = true
+            buttonContent = (
+                <Spinner animation="border" role="status" size="sm" />
+            )
+        }
+
+        let errorMessage = null
+        if (this.props.isError && this.state.alertVisible && !this.state.alertShown) {
+            errorMessage = (
+                <Alert variant="danger" show={this.props.alertVisible} transition="Fade"> 
+                    <p style={{textAlign: "center"}}> {message} </p> 
+                </Alert>
+            )
+        }
+
         return (
             <Container fluid style={{ backgroundImage: "url(./images/login_pic.jpg)", height: "100vh", overflow: "hidden" }}>
+                {errorMessage}
                 <Row style={{ height: "100%" }}>
                     <Col >
                     </Col>
@@ -52,8 +94,8 @@ class Login extends React.Component {
                                 <Form.Label > <b>Password</b></Form.Label>
                                 <Form.Control type="password" placeholder="Password" name="password" onChange={this.onChange} />
                             </Form.Group>
-                            <Button variant="danger" type="submit" style={{ width: "100%" }} onClick={this.onSubmit}>
-                                Login
+                            <Button disabled={disabled} variant="danger" type="submit" style={{ width: "100%" }} onClick={this.onSubmit}>
+                                {buttonContent}
                             </Button>
                         </Form>
                     </Col>
@@ -63,15 +105,14 @@ class Login extends React.Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-    }
-}
+const mapStateToProps = state => ({
+    isFetching: state.login.isFetching,
+    isError: state.login.loginError,
+    message: state.login.message
+})
 
-const mapDispatchToProps = dispatch => {
-    return {
-        login: (email, password, redirectOnSuccess) => dispatch(loginActionCreator(email, password, redirectOnSuccess)),
-    }
-}
+const mapDispatchToProps = dispatch => ({
+    login: (email, password, redirectOnSuccess) => dispatch(loginActionCreator(email, password, redirectOnSuccess))
+})
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))

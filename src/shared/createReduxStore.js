@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import loginReducer from "../login/reducers/loginReducer"
@@ -7,20 +7,23 @@ export const createReduxStore = () => {
     let middlewares = [thunk]
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+        console.log('is develop')
         const logger = createLogger()
         middlewares.push(logger)
     }
 
 
     const rootReducer = combineReducers({
-        loginReducer : loginReducer
+        login : loginReducer
     }) // TODO: use combineReducers()
 
+    
     const store = createStore(
         rootReducer,
-        applyMiddleware(...middlewares)
+        compose(
+            applyMiddleware(...middlewares)
+        )
     )
     return store
-
 }
 

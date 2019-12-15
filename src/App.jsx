@@ -1,42 +1,58 @@
 import React from 'react';
-import { Provider } from 'react-redux'
-import { BrowserRouter, Route } from 'react-router-dom'
-import { createReduxStore } from './shared/createReduxStore'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import Home from './home/containers/Home'
+import Login from './login/components/Login'
 import News from './news/containers/News'
 import Profile from './profile/containers/Profile'
 import Calendar from './calendar/containers/Calendar'
 import Header from './shared/Header'
 import Footer from './shared/Footer'
+import PageNotFound from './shared/PageNotFound'
+import { Container } from 'react-bootstrap';
 
-const store = createReduxStore()
+export default class App extends React.Component {
 
-class App extends React.Component {
-  constructor(props) {
-    super(props)
+  loggedInRouter() {
+    return (
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route path='/home' component={Home} />
+        <Route path='/news' component={News} />
+        <Route path='/profile' component={Profile} />
+        <Route path='/calendar' component={Calendar} />
+        <Route component={PageNotFound} />
+      </Switch>
+    )
+  }
+
+  loggedOutRouter() {
+    return (
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route path='/home' component={Home} />
+        <Route path='/login' component={Login} />
+        <Route component={PageNotFound} />
+      </Switch>
+    )
   }
 
   render() {
+    const isLoggedIn = false // TODO: check if user is logged in
+    let routes = this.loggedOutRouter()
+    if (isLoggedIn) {
+      routes = this.loggedInRouter()
+    }
     return (
-      <Provider store={store}>
-        <React.Fragment>
+      <BrowserRouter>
+        <Header isLoggedIn={isLoggedIn} />
 
-          <Header />
+        <Container fluid>
+          {routes}
+        </Container>
 
-          <BrowserRouter>
-            <Route exact path='/' component={Home} />
-            <Route path="/news" component={News} />
-            <Route path="/profile" component={Profile} />
-            <Route path="/calendar" component={Calendar} />
-          </BrowserRouter>
-
-          <Footer />
-        </React.Fragment>
-        
-      </Provider>
+        <Footer />
+      </BrowserRouter>
     )
   }
 }
-
-export default App;
