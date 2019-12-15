@@ -1,6 +1,7 @@
-import { createStore, applyMiddleware } from 'redux'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
+import loginReducer from "../login/reducers/loginReducer"
 
 export const createReduxStore = () => {
     let middlewares = [thunk]
@@ -11,7 +12,9 @@ export const createReduxStore = () => {
     }
 
 
-    const rootReducer = function() {} // TODO: use combineReducers()
+    const rootReducer = combineReducers({
+        loginReducer : loginReducer
+    }) // TODO: use combineReducers()
 
     const store = createStore(
         rootReducer,
