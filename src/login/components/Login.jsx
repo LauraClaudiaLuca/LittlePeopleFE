@@ -2,6 +2,10 @@ import { Col, Row, Form, Button, Container, Alert } from "react-bootstrap";
 import React from 'react';
 import { connect } from 'react-redux';
 import { loginActionCreator } from "../actions/loginActionCreators"
+import { withRouter } from 'react-router-dom';
+import PropTypes from "prop-types";
+
+
 
 
 /**
@@ -31,7 +35,7 @@ class Login extends React.Component {
         );
     }
     redirectOnSucces = () => {
-        this.props.history.push("/home");
+        this.props.history.push("/home")
     }
 
     render() {

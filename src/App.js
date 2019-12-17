@@ -12,21 +12,6 @@ import Footer from './shared/Footer'
 import Login from './login/components/Login'
 
 const store = createReduxStore()
-
-export const PrivateRoute = ({ component: Component, authorized, redir, ...rest }) => (
-    <Route {...rest} render={(props) => {
-        return authorized === true
-            ? <React.Fragment>
-                <Header />
-                <Component {...props} />                <Footer />
-
-            </React.Fragment>
-            : <React.Fragment>
-                <Redirect to={redir} />
-            </React.Fragment>
-    }
-    } />
-)
 class App extends React.Component {
     constructor(props) {
         super(props)
@@ -34,16 +19,20 @@ class App extends React.Component {
 
     render() {
         var token = localStorage.getItem("token")
+        const dashboardRoute = window.location.pathname === "/" ? <Redirect to="/home" /> : undefined;
         return (
             <Provider store={store}>
                 <React.Fragment>
+                    {/* <Header /> */}
                     <BrowserRouter>
                         <Route exact path="/login" component={Login} />
-                        <PrivateRoute exact path='/home' component={Home} authorized={token != null} redir="/login" />
-                        <PrivateRoute exact path='/news' component={News} authorized={token != null} redir="/login" />
-                        <PrivateRoute exact path='/profile' component={Profile} authorized={token != null} redir="/login" />
-                        <PrivateRoute exact path='/calendar' component={Calendar} authorized={token != null} redir="/login" />
+                        <Route exact path='/home' component={Home} />
+                        <Route exact path='/news' component={News} />
+                        <Route exact path='/profile' component={Profile}/>
+                        <Route exact path='/calendar' component={Calendar}/>
+                        {dashboardRoute}
                     </BrowserRouter>
+                    {/* <Footer /> */}
                 </React.Fragment>
 
             </Provider>
