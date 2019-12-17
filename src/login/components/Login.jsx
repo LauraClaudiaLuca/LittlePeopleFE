@@ -31,9 +31,7 @@ class Login extends React.Component {
         );
     }
     redirectOnSucces = () => {
-        //this.props.history.push("/home");
-        // TODO: when react router is used, decomment this
-        alert("hello")
+        this.props.history.push("/home");
     }
 
     render() {
