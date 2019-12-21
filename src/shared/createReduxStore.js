@@ -13,7 +13,8 @@ export const createReduxStore = () => {
 
 
     const rootReducer = combineReducers({
-        loginReducer : loginReducer
+        loginReducer : loginReducer,
+        profileReducer: profileReducer,
     }) // TODO: use combineReducers()
 
     const store = createStore(

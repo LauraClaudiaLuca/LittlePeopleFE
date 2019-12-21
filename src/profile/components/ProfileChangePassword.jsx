@@ -1,12 +1,13 @@
+import { Card, Form, Row, Col, Button } from 'react-bootstrap'
 import React from 'react'
+import { FaEdit, FaRegSave } from 'react-icons/fa'
+import '../style/profile.css'
+import ProfileChangePasswordStatic from './ProfileChangePasswordStatic';
 import { connect } from 'react-redux'
-import ProfileCard from '../components/ProfileCard'
-import { Container, Row, Col } from 'react-bootstrap'
-import SideNavBar from '../components/SideNavBar';
 
 
 
-class Profile extends React.Component {
+class ProfileChangePassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -52,19 +53,15 @@ class Profile extends React.Component {
             notEditMode: true
         })
     }
-
     render() {
         return (
-            <Container fluid style={{ heigh: "100vh" }}>
-                <Row style={{ heigh: "100vh" }}>
-                    <SideNavBar></SideNavBar>
-                </Row>
-            </Container>
+            <ProfileChangePasswordStatic
+            >
 
+            </ProfileChangePasswordStatic>
         )
     }
 }
-
 const mapStateToProps = state => ({
 
 })
@@ -73,4 +70,4 @@ const mapDispachToProps = dispatch => ({
 
 })
 
-export default connect(mapStateToProps, mapDispachToProps)(Profile)
+export default connect(mapStateToProps, mapDispachToProps)(ProfileChangePassword)

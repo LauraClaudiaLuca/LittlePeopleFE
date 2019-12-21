@@ -10,6 +10,7 @@ import Calendar from './calendar/containers/Calendar'
 import Header from './shared/Header'
 import Footer from './shared/Footer'
 import Login from './login/components/Login'
+import ProfileCard from './profile/components/ProfileCard';
 
 const store = createReduxStore()
 class App extends React.Component {
@@ -28,11 +29,11 @@ class App extends React.Component {
                         <Route exact path="/login" component={Login} />
                         <Route exact path='/home' component={Home} />
                         <Route exact path='/news' component={News} />
-                        <Route exact path='/profile' component={Profile}/>
-                        <Route exact path='/calendar' component={Calendar}/>
+                        <Route path='/profile' component={Profile}/>
+                        <Route exact path='/calendar' component={Calendar} />
                         {dashboardRoute}
                     </BrowserRouter>
-                    {/* <Footer /> */}
+                    {/* <Footer/> */}
                 </React.Fragment>
 
             </Provider>
