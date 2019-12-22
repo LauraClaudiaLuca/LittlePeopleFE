@@ -8,51 +8,52 @@ import { Col } from 'react-bootstrap';
 import { FaUserCircle, FaCog } from 'react-icons/fa'
 
 
-class SideNavBar extends React.Component {
-    render() {
-        return (
-            <Router>
-                <Route render={({ location, history }) => (
-                    <React.Fragment>
-                        <Col xs={2} xl ={2} style={{height:"100vh"}}>
-                            <SideNav
-                                onSelect={(selected) => {
-                                    const to = '/' + selected;
-                                    if (location.pathname !== to) {
-                                        history.push(to);
-                                    }
-                                }}
-                            >
-                                <SideNav.Toggle/>
-                                <SideNav.Nav defaultSelected="profile">
-                                    <NavItem eventKey="profile">
-                                        <NavIcon>
-                                            <FaUserCircle size="25" style={{ color: "white" }} />
-                                        </NavIcon>
-                                        <NavText>
-                                            My Profile
+const SideNavBar = (
+    redirectOnSuccess
+) => {
+    return (
+        <Router>
+            {console.log("red",redirectOnSuccess)}
+            <Route render={({ location, history }) => (
+                <React.Fragment>
+                    <Col xs={2} xl={2} style={{ height: "100vh" }}>
+                        <SideNav
+                            onSelect={(selected) => {
+                                const to = '/' + selected;
+                                if (location.pathname !== to) {
+                                    history.push(to);
+                                }
+                            }}
+                        >
+                            <SideNav.Toggle />
+                            <SideNav.Nav defaultSelected="profile">
+                                <NavItem eventKey="profile">
+                                    <NavIcon>
+                                        <FaUserCircle size="25" style={{ color: "white" }} />
+                                    </NavIcon>
+                                    <NavText>
+                                        My Profile
                                     </NavText>
-                                    </NavItem>
-                                    <NavItem eventKey="profile/pass">
-                                        <NavIcon>
-                                            <FaCog size="25" style={{ color: "white" }} />
-                                        </NavIcon>
-                                        <NavText>
-                                            Change Password
+                                </NavItem>
+                                <NavItem eventKey="profile/pass">
+                                    <NavIcon>
+                                        <FaCog size="25" style={{ color: "white" }} />
+                                    </NavIcon>
+                                    <NavText>
+                                        Change Password
                                         </NavText>
-                                    </NavItem>
-                                </SideNav.Nav>
-                            </SideNav>
-                        </Col>
-                        <Col xs={8} xl={8}>
-                            <Route exact path="/profile" component={props => <ProfileCard />} />
-                            <Route exact path="/profile/pass" component={props => <ProfileChangePassword />} />
-                        </Col>
-                    </React.Fragment>
-                )}
-                />
-            </Router>
-        )
-    }
+                                </NavItem>
+                            </SideNav.Nav>
+                        </SideNav>
+                    </Col>
+                    <Col xs={8} xl={8}>
+                        <Route exact path="/profile" render={(props)=><ProfileCard {...props}/>} />
+                        <Route exact path="/profile/pass" component={props => <ProfileChangePassword redirectOnSuccess={redirectOnSuccess} />} />
+                    </Col>
+                </React.Fragment>
+            )}
+            />
+        </Router>
+    )
 }
 export default SideNavBar;

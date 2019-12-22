@@ -5,6 +5,10 @@ import '../style/profile.css'
 import ProfileCardStatic from './ProfileCardStatic';
 import { connect } from 'react-redux'
 import { editProfileActionCreator, changePassActionCreator } from '../actions/profileActionCreators';
+import {withRouter} from 'react-router-dom'
+import {history} from '../../shared/history'
+import Swal from 'sweetalert2'
+
 
 
 class ProfileCard extends React.Component {
@@ -28,11 +32,6 @@ class ProfileCard extends React.Component {
 
     componentDidMount() {
         this.undo();
-    }
-    redirectOnSucces = () => {
-        //TODO: call logout
-        localStorage.removeItem('token')
-        this.props.history.push("/login")
     }
 
     onChange = (event) => {
@@ -70,6 +69,19 @@ class ProfileCard extends React.Component {
             invalidPhone: undefined,
             invalidUsername: undefined,
         })
+    }
+    redirectOnSucces = async () => {
+        //TODO: call logout
+        await Swal.fire({
+            icon: 'success',
+            title: 'Profile updated!',
+            text: 'We will redirect you to login again....',
+            confirmButtonColor: '#db3d44',
+          })
+        localStorage.removeItem('token')
+        history.push("/login")
+        window.location.reload()
+
     }
     saveProfileInfo = () => {
         if (this.state.invalidFirstName == false && this.state.invalidSurName == false
@@ -129,4 +141,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileCard)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProfileCard))

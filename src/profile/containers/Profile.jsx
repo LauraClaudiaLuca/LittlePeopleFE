@@ -52,12 +52,19 @@ class Profile extends React.Component {
             notEditMode: true
         })
     }
+    redirectOnSucces = () => {
+        //TODO: call logout
+        localStorage.removeItem('token')
+        this.props.history.push("/login")
+    }
 
     render() {
         return (
             <Container fluid style={{ heigh: "100vh" }}>
                 <Row style={{ heigh: "100vh" }}>
-                    <SideNavBar></SideNavBar>
+                    <SideNavBar 
+                    redirectOnSucces={this.redirectOnSucces}
+                    ></SideNavBar>
                 </Row>
             </Container>
 

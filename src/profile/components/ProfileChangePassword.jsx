@@ -5,7 +5,8 @@ import '../style/profile.css'
 import ProfileChangePasswordStatic from './ProfileChangePasswordStatic';
 import { connect } from 'react-redux'
 import {changePassActionCreator} from '../actions/profileActionCreators'
-
+import Swal from 'sweetalert2'
+import {history} from '../../shared/history'
 
 
 class ProfileChangePassword extends React.Component {
@@ -30,13 +31,21 @@ class ProfileChangePassword extends React.Component {
             [name]: value
         })
     }
-    redirectOnSucces = () => {
+    redirectOnSucces = async () => {
         //TODO: call logout
+        await Swal.fire({
+            icon: 'success',
+            title: 'Password updated!',
+            text: 'We will redirect you to login again ....',
+            confirmButtonColor: '#db3d44',
+          })
         localStorage.removeItem('token')
-        this.props.history.push("/login")
+        history.push("/login")
+        window.location.reload()
+
     }
     savePassword = () => {
-        this.props.changePassword(this.state.changePassword, "", this.redirectOnSuccess)
+        this.props.changePassword(this.state.changePassword, "", this.props.redirectOnSuccess)
         this.alert("yey")
     }
     render() {
