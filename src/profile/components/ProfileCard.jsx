@@ -81,8 +81,9 @@ class ProfileCard extends React.Component {
                 invalidPhone: undefined,
                 invalidUsername: undefined,
             });
-            editProfile(this.state.username, this.state.firstName, this.state.surName,
-                 this.state.phone,this.props.loginReducer.token, this.redirectOnSucces);
+            var user = JSON.parse(localStorage.getItem('token'))
+            this.props.editProfile(this.state.username, this.state.firstName, this.state.surName,
+                 this.state.phone,user.userToken, this.redirectOnSucces);
         }
     }
     validate = () => {
@@ -118,7 +119,6 @@ class ProfileCard extends React.Component {
 }
 const mapStateToProps = (state) => {
     return {
-        loginReducer: loginReducer
     }
 }
 
@@ -126,7 +126,6 @@ const mapDispatchToProps = dispatch => {
     return {
         editProfile: (username, firstName, surName, phone, token, redirectOnSuccess) =>
             dispatch(editProfileActionCreator(username, firstName, surName, phone, token, redirectOnSuccess)),
-        changePassword: (password, token, redirectOnSuccess) => dispatch(changePassActionCreator(password, token, redirectOnSuccess))
     }
 }
 

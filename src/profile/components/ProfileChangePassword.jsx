@@ -4,6 +4,7 @@ import { FaEdit, FaRegSave } from 'react-icons/fa'
 import '../style/profile.css'
 import ProfileChangePasswordStatic from './ProfileChangePasswordStatic';
 import { connect } from 'react-redux'
+import {changePassActionCreator} from '../actions/profileActionCreators'
 
 
 
@@ -11,29 +12,15 @@ class ProfileChangePassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: "",
             password: "",
-            firstName: "",
-            surName: "",
-            phone: "",
-            city: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            notEditMode: true,
+            confirm: "",
         }
     }
 
     componentDidMount() {
-        var user = JSON.parse(localStorage.getItem('token'))
         this.setState({
-            username: user.username,
-            firstName: user.firstName,
-            surName: user.surname,
-            phone: user.phone,
-            city: user.city,
-            email: "laura@gmail.com",
-            notEditMode: true,
+            password: "",
+            confirm: "",
         })
     }
     onChange = (event) => {
@@ -43,31 +30,35 @@ class ProfileChangePassword extends React.Component {
             [name]: value
         })
     }
-    toEditMode = () => {
-        this.setState({
-            notEditMode: false
-        })
+    redirectOnSucces = () => {
+        //TODO: call logout
+        localStorage.removeItem('token')
+        this.props.history.push("/login")
     }
-    saveProfileInfo = () => {
-        this.setState({
-            notEditMode: true
-        })
+    savePassword = () => {
+        this.props.changePassword(this.state.changePassword, "", this.redirectOnSuccess)
+        this.alert("yey")
     }
     render() {
         return (
             <ProfileChangePasswordStatic
-            >
-
-            </ProfileChangePasswordStatic>
+                password={this.state.password}
+                confirm={this.state.confirm}
+                onChange={this.onChange}
+                savePassword={this.savePassword}
+            />
         )
     }
 }
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => {
+    return {
+    }
+}
 
-})
+const mapDispatchToProps = dispatch => {
+    return {
+        changePassword: (password, token, redirectOnSuccess) => dispatch(changePassActionCreator(password, token, redirectOnSuccess))
+    }
+}
 
-const mapDispachToProps = dispatch => ({
-
-})
-
-export default connect(mapStateToProps, mapDispachToProps)(ProfileChangePassword)
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileChangePassword)

@@ -2,6 +2,7 @@ import { createStore, applyMiddleware, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import loginReducer from "../login/reducers/loginReducer"
+import profileReducer from "../profile/reducers/profileReducer"
 
 export const createReduxStore = () => {
     let middlewares = [thunk]

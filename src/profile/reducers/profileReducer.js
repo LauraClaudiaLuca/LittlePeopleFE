@@ -12,4 +12,4 @@ const profileReducer = (state = initialErr, action) => {
     return newState;
 }
 
-export default loginReducer
+export default profileReducer

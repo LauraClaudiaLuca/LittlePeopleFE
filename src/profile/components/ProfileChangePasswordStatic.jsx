@@ -30,7 +30,7 @@ const ProfileChangePasswordStatic = ({
                         <Col>
                             <Form.Group controlId="formConfirmPassword">
                                 <Form.Label> <b>Confirm Password</b></Form.Label>
-                                <Form.Control value={confirmPassword} type="password" onChange={onChange} name="password" placeholder="Confirm Password"></Form.Control>
+                                <Form.Control value={confirmPassword} type="password" onChange={onChange} name="confirm" placeholder="Confirm Password"></Form.Control>
                             </Form.Group>
                         </Col>
                     </Row>

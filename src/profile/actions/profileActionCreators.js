@@ -1,11 +1,8 @@
 import axios from 'axios'
+import axiosInstance from '../../shared/axiosinstance';
 
-var headers = {
-    'Content-Type': 'application/json',
-    'Authorization': '',
-}
 export const editProfileActionCreator = (username, firstName, surName, phone, token, redirectOnSuccess) => {
-    headers.Authorization = token;
+    console.log("token",token)
     return dispatch => {
         return axios
             .post("http://localhost:8080/api/user/edit",
@@ -14,10 +11,9 @@ export const editProfileActionCreator = (username, firstName, surName, phone, to
                     firstName: firstName,
                     surname: surName,
                     phone: phone,
-                },
-                {
-                    headers: headers
-                },
+                },{
+                    headers: {"AUTHORIZATION":token}
+                }
             )
             .then(res => {
                 redirectOnSuccess()
@@ -26,15 +22,11 @@ export const editProfileActionCreator = (username, firstName, surName, phone, to
     }
 }
 export const changePassActionCreator = (password, redirectOnSuccess, token) => {
-    headers.Authorization = token;
     return dispatch => {
         return axios
             .post("http://localhost:8080/api/user/edit",
                 {
                     password: password
-                },
-                {
-                    headers: headers
                 }
             )
             .then(res => {
