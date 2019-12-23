@@ -9,11 +9,9 @@ import { FaUserCircle, FaCog } from 'react-icons/fa'
 
 
 const SideNavBar = (
-    redirectOnSuccess
 ) => {
     return (
         <Router>
-            {console.log("red",redirectOnSuccess)}
             <Route render={({ location, history }) => (
                 <React.Fragment>
                     <Col xs={2} xl={2} style={{ height: "100vh" }}>
@@ -48,7 +46,7 @@ const SideNavBar = (
                     </Col>
                     <Col xs={8} xl={8}>
                         <Route exact path="/profile" render={(props)=><ProfileCard {...props}/>} />
-                        <Route exact path="/profile/pass" component={props => <ProfileChangePassword redirectOnSuccess={redirectOnSuccess} />} />
+                        <Route exact path="/profile/pass" render={props => <ProfileChangePassword {...props}/>} />
                     </Col>
                 </React.Fragment>
             )}

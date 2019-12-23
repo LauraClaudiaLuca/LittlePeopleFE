@@ -62,7 +62,7 @@ class ProfileCard extends React.Component {
             surName: user.surname,
             phone: user.phone,
             city: user.city,
-            email: "laura@gmail.com",
+            email:user.email,
             notEditMode: true,
             invalidFirstName: undefined,
             invalidSurName: undefined,
@@ -70,18 +70,15 @@ class ProfileCard extends React.Component {
             invalidUsername: undefined,
         })
     }
-    redirectOnSucces = async () => {
-        //TODO: call logout
-        await Swal.fire({
+    redirectOnSucces = () => {
+        Swal.fire({
             icon: 'success',
             title: 'Profile updated!',
-            text: 'We will redirect you to login again....',
+            text: 'We have succesfully updated your profile.',
             confirmButtonColor: '#db3d44',
           })
-        localStorage.removeItem('token')
-        history.push("/login")
-        window.location.reload()
-
+        this.undo();
+        
     }
     saveProfileInfo = () => {
         if (this.state.invalidFirstName == false && this.state.invalidSurName == false
@@ -93,9 +90,8 @@ class ProfileCard extends React.Component {
                 invalidPhone: undefined,
                 invalidUsername: undefined,
             });
-            var user = JSON.parse(localStorage.getItem('token'))
             this.props.editProfile(this.state.username, this.state.firstName, this.state.surName,
-                 this.state.phone,user.userToken, this.redirectOnSucces);
+                 this.state.phone, this.redirectOnSucces);
         }
     }
     validate = () => {

@@ -11,8 +11,7 @@ import Header from './shared/Header'
 import Footer from './shared/Footer'
 import Login from './login/components/Login'
 import ProfileCard from './profile/components/ProfileCard';
-import createHistory from 'history/createBrowserHistory';
-import {history} from './shared/history'
+import {history} from './shared/history';
 
 const store = createReduxStore()
 class App extends React.Component {

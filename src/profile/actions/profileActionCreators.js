@@ -3,8 +3,7 @@ import axiosInstance from '../../shared/axiosinstance';
 import Swal from 'sweetalert2'
 
 
-export const editProfileActionCreator = (username, firstName, surName, phone, token, redirectOnSuccess) => {
-    console.log("token", token)
+export const editProfileActionCreator = (username, firstName, surName, phone, redirectOnSuccess) => {
     return dispatch => {
         return axiosInstance
             .post("http://localhost:8080/api/user/edit",
@@ -16,38 +15,40 @@ export const editProfileActionCreator = (username, firstName, surName, phone, to
                 }
             )
             .then(res => {
+                const token = res.data;
+                localStorage.setItem('token', JSON.stringify(token));
                 redirectOnSuccess()
             })
-        //.catch((err) => alert("Something went wrong..."));
-        // return axios({
-        //     method: 'post',
-        //     url: "http://localhost:8080/api/user/edit",
-        //     data: {
-        //         username: username,
-        //         firstName: firstName,
-        //         surname: surName,
-        //         phone: phone,
-        //     },
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Access-Control-Allow-Origin': '*',
-        //         'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
-        //         'AUTHORIZATION': token
-        //     }
-        // })
+            .catch((err) =>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong.',
+                    confirmButtonColor: '#db3d44',
+                    confirmButtonText: 'OK'
+                })
+            );
     }
 }
-export const changePassActionCreator = (password, redirectOnSuccess, token) => {
+export const changePassActionCreator = (password, redirectOnSuccess) => {
     return dispatch => {
-        return axios
-            .post("http://localhost:8080/api/user/edit",
+        return axiosInstance
+            .post("http://localhost:8080/api/user/update_password",
                 {
-                    password: password
+                    newPassword: password,
                 }
             )
             .then(res => {
                 redirectOnSuccess()
             })
-            .catch((err) => alert("Something went wrong..."));
+            .catch((err) =>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong.',
+                    confirmButtonColor: '#db3d44',
+                    confirmButtonText: 'OK'
+                })
+            );
     }
 }

@@ -63,7 +63,6 @@ class Profile extends React.Component {
             <Container fluid style={{ heigh: "100vh" }}>
                 <Row style={{ heigh: "100vh" }}>
                     <SideNavBar 
-                    redirectOnSucces={this.redirectOnSucces}
                     ></SideNavBar>
                 </Row>
             </Container>

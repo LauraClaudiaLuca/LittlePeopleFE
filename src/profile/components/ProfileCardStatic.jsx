@@ -12,7 +12,6 @@ const ProfileCardStatic = ({
     notEditMode,
     onChange,
     toEditMode,
-    cancelEdit,
     saveProfileInfo,
     invalidFirstName,
     invalidSurName,
