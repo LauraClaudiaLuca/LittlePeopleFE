@@ -1,8 +1,9 @@
-import { Col, Row, Form, Button, Container, Spinner, Alert } from "react-bootstrap"
+import { Col, Row, Form, Button, Container, Spinner } from "react-bootstrap"
 import React from 'react'
 import { connect } from 'react-redux'
 import { loginActionCreator } from "../actions/loginActionCreators"
 import { withRouter } from 'react-router-dom'
+import AlertDialog from '../../shared/AlertDialog'
 
 /**
  * @author [Laura]
@@ -12,11 +13,10 @@ class Login extends React.Component {
         super(props)
         this.state = {
             email: "",
-            password: "",
-            alertVisible: false,
-            alertShown: false
+            password: ""
         }
     }
+
     onChange = (event) => {
         const { value, name } = event.target;
 
@@ -24,6 +24,7 @@ class Login extends React.Component {
             [name]: value
         })
     }
+
     onSubmit = (event) => {
         event.preventDefault();
         this.props.login(
@@ -32,30 +33,9 @@ class Login extends React.Component {
             this.redirectOnSucces
         );
     }
+
     redirectOnSucces = () => {
-        //this.props.history.push("/home");
-        // TODO: when react router is used, decomment this
-        alert("hello")
-    }
-
-    showAlert() {
-        this.setState({ 
-            alertVisible: true,
-        }, 
-        () => {
-            window.setTimeout(() => {
-                this.setState({ 
-                    alertVisible: false,
-                    alertShown: true
-                })
-            }, 3000)
-        })
-    }
-
-    componentDidUpdate() {
-        if (this.props.isError && !this.state.alertVisible && !this.state.alertShown) {
-            this.showAlert()
-        }
+        this.props.history.push("/home")
     }
 
     render() {
@@ -70,20 +50,15 @@ class Login extends React.Component {
         }
 
         let errorMessage = null
-        if (this.props.isError && this.state.alertVisible && !this.state.alertShown) {
-            errorMessage = (
-                <Alert variant="danger" show={this.props.alertVisible} transition="Fade"> 
-                    <p style={{textAlign: "center"}}> {message} </p> 
-                </Alert>
-            )
+        if (isError) {
+            errorMessage = <AlertDialog message={message} danger/>
         }
 
         return (
             <Container fluid style={{ backgroundImage: "url(./images/login_pic.jpg)", height: "100vh", overflow: "hidden" }}>
                 {errorMessage}
                 <Row style={{ height: "100%" }}>
-                    <Col >
-                    </Col>
+                    <Col> </Col>
                     <Col xs lg="3" style={{ background: "rgba(255,255,255, 0.7)" }}>
                         <Form style={{ marginTop: "70%" }}>
                             <Form.Group controlId="formBasicEmail">

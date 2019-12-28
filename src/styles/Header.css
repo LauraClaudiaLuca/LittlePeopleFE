@@ -1,19 +1,24 @@
 #logo {
     font-size: 1.5em;
-    color: white;
+    color: red;
     padding: 0;
+}
+
+#logo-image {
+    width: 120px;
+    height: 75px;
 }
 
 a.header-link {
     font-size: 1.2em;
     padding: 0 20px;
-    color: white;
+    color: red;
 }
 
 a.header-link:focus {
-    color: white;
+    color: red;
 }
 
 a.header-link:hover {
-    color: white;
+    color: red;
 }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 import { LOGIN_REQUEST, LOGIN_FAILURE, LOGIN_SUCCESS } from './loginActionTypes';
 
 export const loginRequestAction = () => {
@@ -17,7 +18,7 @@ export const loginFailureAction = () => {
 export const loginSuccessAction = email => {
     return {
         type: LOGIN_SUCCESS,
-        message: `Hello ${email}!`
+        message: `Welcome ${email}!`
     }
 }
 

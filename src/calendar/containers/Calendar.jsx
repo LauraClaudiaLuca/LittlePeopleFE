@@ -3,9 +3,9 @@ import { connect } from 'react-redux'
 
 
 class Calendar extends React.Component {
-    constructor(props) {
-        super(props)
-    }
+    // constructor(props) {
+    //     super(props)
+    // }
 
     render() {
         return (
