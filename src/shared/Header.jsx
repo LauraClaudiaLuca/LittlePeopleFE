@@ -6,23 +6,29 @@ import { FaUser } from 'react-icons/fa'
 export default class Header extends React.Component {
 
     headerLinks() {
-        return(
+        return (
             <React.Fragment>
                 <Nav className="mr-auto">
                     <Link className="header-link" to="/"> Home </Link>
                     <Link className="header-link" to="/news"> News </Link>
                     <Link className="header-link" to="/calendar"> Calendar </Link>
+                    {this.props.user.isAdmin
+                        ?
+                        <Link className="header-link" to="/admin"> Volunteers </Link>
+                        :
+                        null
+                    }
                 </Nav>
 
                 <Navbar.Collapse className="justify-content-end">
-                    <Link className="header-link" to="/profile"> 
+                    <Link className="header-link" to="/profile">
                         {this.props.user.firstName}
                         <FaUser />
                     </Link>
-                    
-            </Navbar.Collapse>
+
+                </Navbar.Collapse>
             </React.Fragment>
-            
+
         )
     }
 
@@ -34,14 +40,14 @@ export default class Header extends React.Component {
         }
         return (
             <Navbar bg="light" sticky="top">
-                <Navbar.Brand> 
+                <Navbar.Brand>
                     <Link to="/" id="logo" className="header-link">
-                    { /* <img id="logo-image" src="images/little_people.jpg"></img> */ }
-                    Little People
-                    </Link> 
+                        { /* <img id="logo-image" src="images/little_people.jpg"></img> */}
+                        Little People
+                    </Link>
                 </Navbar.Brand>
 
-                { links }
+                {links}
             </Navbar>
         )
     }
