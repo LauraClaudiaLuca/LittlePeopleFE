@@ -15,3 +15,9 @@
   color: white;
   border-radius: 50%;
 }
+.form-control.is-invalid{
+    background-image: none;
+}
+.form-control.is-valid{
+    background-image: none;
+}

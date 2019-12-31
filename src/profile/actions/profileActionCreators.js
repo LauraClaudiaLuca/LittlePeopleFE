@@ -16,16 +16,18 @@ export const editProfileActionCreator = (username, firstName, surName, phone, re
             .then(res => {
                 const token = res.data;
                 localStorage.setItem('token', JSON.stringify(token));
-                redirectOnSuccess()
+                redirectOnSuccess(true)
             })
             .catch((err) =>
-                Swal.fire({
+                {Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: 'Something went wrong.',
                     confirmButtonColor: '#db3d44',
                     confirmButtonText: 'OK'
                 })
+                redirectOnSuccess(false);
+            }
             );
     }
 }

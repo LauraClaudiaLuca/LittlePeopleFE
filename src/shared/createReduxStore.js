@@ -4,9 +4,11 @@ import { createLogger } from 'redux-logger'
 import loginReducer from "../login/reducers/loginReducer"
 import profileReducer from "../profile/reducers/profileReducer"
 import userDataReducer from './reducers'
+import adminReducer from '../admin/reducers/adminReducer'
 
 export const createReduxStore = () => {
     let middlewares = [thunk]
+    const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
     if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
         const logger = createLogger()
@@ -18,12 +20,13 @@ export const createReduxStore = () => {
         user: userDataReducer,
         login : loginReducer,
         profileReducer: profileReducer,
+        adminReducer : adminReducer,
     })
 
     
     const store = createStore(
         rootReducer,
-        compose(
+        composeEnhancers(
             applyMiddleware(...middlewares)
         )
     )

@@ -3,8 +3,10 @@ import '../style/profile.css'
 import ProfileCardStatic from './ProfileCardStatic';
 import { connect } from 'react-redux'
 import { editProfileActionCreator } from '../actions/profileActionCreators';
-import {withRouter} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { history } from '../../shared/history'
+import {getUserData} from '../../shared/actions'
 
 
 class ProfileCard extends React.Component {
@@ -58,7 +60,7 @@ class ProfileCard extends React.Component {
             surName: user.surname,
             phone: user.phone,
             city: user.city,
-            email:user.email,
+            email: user.email,
             notEditMode: true,
             invalidFirstName: undefined,
             invalidSurName: undefined,
@@ -66,15 +68,18 @@ class ProfileCard extends React.Component {
             invalidUsername: undefined,
         })
     }
-    redirectOnSucces = () => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Profile updated!',
-            text: 'We have succesfully updated your profile.',
-            confirmButtonColor: '#db3d44',
-          })
+    redirectOnSucces = async (b) => {
+        if (b) {
+            await Swal.fire({
+                icon: 'success',
+                title: 'Profile updated!',
+                text: 'We have succesfully updated your profile.',
+                confirmButtonColor: '#db3d44',
+            })
+            this.props.getUserData(localStorage.getItem('token'));
+
+        }
         this.undo();
-        
     }
     saveProfileInfo = () => {
         if (this.state.invalidFirstName === false && this.state.invalidSurName === false
@@ -87,7 +92,7 @@ class ProfileCard extends React.Component {
                 invalidUsername: undefined,
             });
             this.props.editProfile(this.state.username, this.state.firstName, this.state.surName,
-                 this.state.phone, this.redirectOnSucces);
+                this.state.phone, this.redirectOnSucces);
         }
     }
     validate = () => {
@@ -130,6 +135,7 @@ const mapDispatchToProps = dispatch => {
     return {
         editProfile: (username, firstName, surName, phone, token, redirectOnSuccess) =>
             dispatch(editProfileActionCreator(username, firstName, surName, phone, token, redirectOnSuccess)),
+        getUserData: token => dispatch(getUserData(token)),
     }
 }
 
