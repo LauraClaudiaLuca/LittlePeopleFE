@@ -2,11 +2,12 @@ import React from 'react'
 import VolunteerCardStatic from './VolunteerCardStatic'
 
 const VolunteerListStatic = ({
-   volunteers
+   volunteers,
+   onDelete,
 }) => {
     return (
         volunteers.map(volunteer =>
-            <VolunteerCardStatic key={volunteer.email} volunteer={volunteer} />
+            <VolunteerCardStatic key={volunteer.email} volunteer={volunteer}  onDelete={onDelete}/>
         )
     )
 }

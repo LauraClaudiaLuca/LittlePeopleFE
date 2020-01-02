@@ -5,14 +5,18 @@ import '../style/admin.css'
 
 
 const VolunteerCardStatic = ({
-    volunteer
+    volunteer,
+    onDelete,
 }) => {
     return (
         <Card className="volunteerCard">
             <Card.Body>
                 <Card.Title style={{color:"#db3d44"}}>
                     {volunteer.firstName} {volunteer.surName}
-                    <FaTrashAlt className="icons" style={{ float: "right" }} size="25"/>
+                    <FaTrashAlt 
+                    className="icons" 
+                    style={{ float: "right" }} size="25"
+                    onClick={()=>onDelete(volunteer.id)}/>
                 </Card.Title>
                 <Card.Text>
                     <Row>

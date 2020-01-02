@@ -5,8 +5,8 @@ import { Container, Row, Col, Button, Form, FormControl, InputGroup, ButtonToolb
 import { FaUserPlus, FaSearch } from 'react-icons/fa'
 import AddVolunteerModal from "../components/AddVolunteerModal"
 import ReactDOM from 'react-dom'
-import { getVolunteersActionCreator, getHospitalsActionCreator, addActionCreator } from '../actions/adminActionCreator'
-
+import { getVolunteersActionCreator, getHospitalsActionCreator, addActionCreator, deleteActionCreator } from '../actions/adminActionCreator'
+import Swal from 'sweetalert2'
 
 
 class AdminDashboard extends React.Component {
@@ -15,13 +15,17 @@ class AdminDashboard extends React.Component {
         this.state = {
             selectedHospitalId: -1,
             email: "",
+            filter: "",
             invalidEmail: undefined,
             invalidHospital: undefined,
+            volunteers: [],
+            searchMode: false,
         }
     }
     componentDidMount() {
         this.setState({
             selectedHospitalId: -1,
+            filter: "",
             invalidEmail: undefined,
             invalidHospital: undefined,
         })
@@ -29,11 +33,55 @@ class AdminDashboard extends React.Component {
         this.props.getVolunteers();
     }
 
+    componentDidUpdate(prevProps) {
+        const { adminReducer: prevAdminReducer } = prevProps;
+        const { adminReducer: nextAdminReducer } = this.props;
+        if (prevAdminReducer !== nextAdminReducer) {
+            this.setState({
+                volunteers: [...nextAdminReducer.volunteers]
+            })
+        }
+    }
+
     save = () => {
-        this.props.addVolunteer(this.state.email, this.state.selectedHospitalId);
+        console.log("hello")
+        this.props.addVolunteer(this.state.email, this.state.selectedHospitalId, this.props.userReducer.city);
+        this.setState({
+            searchMode: false,
+        })
     }
     delete = (id) => {
-
+        var deleteConfirm = this.deleteConfirmed;
+        Swal.fire({
+            title: "Are you sure?",
+            text: "The volunteer will be deleted permanently.",
+            icon: "warning",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            showCancelButton: true,
+            confirmButtonColor: '#db3d44',
+            position:'center'
+        }).then((isConfirm) =>{
+            if (isConfirm.value===true) {
+                deleteConfirm(id)
+            }
+            else{
+            }
+        });
+    }
+    deleteConfirmed = (id) => {
+        this.setState({
+            filter: "",
+            searchMode: false,
+        })
+        document.getElementById("search").value = "";
+        this.props.deleteVolunteer(id,this.props.userReducer.city);
+        Swal.fire({
+            icon: 'success',
+            title: 'Volunteer deleted!',
+            confirmButtonColor: '#db3d44',
+            confirmButtonText:'Got it!'
+        })
     }
 
     onChange = (event) => {
@@ -47,12 +95,43 @@ class AdminDashboard extends React.Component {
             }
         )
     }
+    onChangeFilter = (event) => {
+        const { value, name } = event.target;
+        if (value !== "") {
+            this.setState({
+                filter: value,
+                searchMode: true,
+            },
+                () => {
+                    this.searchVolunteer();
+                }
+            )
+        }
+        else {
+            this.setState({
+                filter: value,
+                searchMode: false,
+                volunteers: [],
+            })
+        }
+    }
+    searchVolunteer = () => {
+        var filtered = this.props.adminReducer.volunteers.filter(v => v.firstName.toLowerCase().startsWith(this.state.filter.toLowerCase()));
+        this.setState({
+            volunteers: [...filtered]
+        })
+    }
 
     validate = () => {
+        var isEmail = this.validateEmail(this.state.email);
         this.setState({
             invalidHospital: this.state.selectedHospitalId === -1,
-            invalidEmail: this.state.email.length === 0,
+            invalidEmail: this.state.email.length === 0 || isEmail === false,
         })
+    }
+    validateEmail = (email) => {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
     }
     selectedOption = (event) => {
         var target = event.target;
@@ -77,7 +156,7 @@ class AdminDashboard extends React.Component {
     render() {
         console.log(this.state.volunteers)
         return (
-            <Container fluid style={{ backgroundColor: "#f8f9fa" }}>
+            <Container fluid style={{ backgroundColor: "#f8f9fa", height: "93vh" }}>
                 <Row>
                     <Col xs={2}>
                     </Col>
@@ -103,12 +182,14 @@ class AdminDashboard extends React.Component {
                                     <FormControl
                                         placeholder="Search after first name ..."
                                         aria-describedby="basic-addon2"
+                                        name="filter"
+                                        onChange={this.onChangeFilter}
+                                        id="search"
                                     />
                                     <InputGroup.Append>
                                         <InputGroup.Text
                                             style={{
                                                 backgroundColor: "rgb(219, 61, 68)",
-                                                cursor: "pointer",
                                                 color: "white",
                                             }}>
                                             <FaSearch />
@@ -118,7 +199,7 @@ class AdminDashboard extends React.Component {
                             </Col>
                         </Row>
                         <VolunteerListStatic
-                            volunteers={this.props.adminReducer.volunteers}
+                            volunteers={this.state.searchMode === false ? this.props.adminReducer.volunteers : this.state.volunteers}
                             onDelete={this.delete}
                         />
                     </Col>
@@ -134,15 +215,16 @@ class AdminDashboard extends React.Component {
 const mapStateToProps = state => {
     return {
         adminReducer: state.adminReducer,
-        userReducer :state.userReducer,
+        userReducer: state.user,
     }
 }
 
 const mapDispachToProps = dispatch => {
     return {
         getVolunteers: (city) => dispatch(getVolunteersActionCreator(city)),
-        getHospitals : (city) => dispatch(getHospitalsActionCreator(city)),
-        addVolunteer : (email,hospitalId) => dispatch(addActionCreator(email,hospitalId)),
+        getHospitals: (city) => dispatch(getHospitalsActionCreator(city)),
+        addVolunteer: (email, hospitalId) => dispatch(addActionCreator(email, hospitalId)),
+        deleteVolunteer: (volunteerId, city) => dispatch(deleteActionCreator(volunteerId, city)),
     }
 }
 
