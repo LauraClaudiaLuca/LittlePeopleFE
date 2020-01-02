@@ -12,7 +12,7 @@ const VolunteerCardStatic = ({
         <Card className="volunteerCard">
             <Card.Body>
                 <Card.Title style={{color:"#db3d44"}}>
-                    {volunteer.firstName} {volunteer.surName}
+                    {volunteer.firstName} {volunteer.surname}
                     <FaTrashAlt 
                     className="icons" 
                     style={{ float: "right" }} size="25"

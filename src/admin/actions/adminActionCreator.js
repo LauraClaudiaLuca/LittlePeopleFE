@@ -78,19 +78,19 @@ export const getVolunteersActionCreator = (city) => {
     return dispatch => {
         dispatch(addRequestAction())
         return axiosInstance
-            .get("http://localhost:8080/api/.......")
+            .get("http://localhost:8080/api/user/leader/getVolunteersByCity?city="+city)
             .then(res => {
                 dispatch(getVolunteersSuccessAction(res.data));
             })
             .catch(
                 (err) => {
-                //     Swal.fire({
-                //         icon: 'error',
-                //         title: 'Oops...',
-                //         text: 'Something went wrong.',
-                //         confirmButtonColor: '#db3d44',
-                //         confirmButtonText: 'OK'
-                //     })
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong.',
+                        confirmButtonColor: '#db3d44',
+                        confirmButtonText: 'OK'
+                    })
                     dispatch(getVolunteersFailureAction())
                 }
             )
@@ -103,10 +103,10 @@ export const getHospitalsRequestAction = () => {
     }
 }
 
-export const getHospitalsSuccessAction = (volunteers) => {
+export const getHospitalsSuccessAction = (hospitals) => {
     return {
         type: GET_HOSPITALS_SUCCESS,
-        volunteers: volunteers
+       hospitals: hospitals
     }
 }
 
@@ -119,19 +119,19 @@ export const getHospitalsActionCreator = (city) => {
     return dispatch => {
         dispatch(getHospitalsRequestAction())
         return axiosInstance
-            .get("http://localhost:8080/api/hospitals")
+            .get("http://localhost:8080/api/hospital/getHospitalsByCity?city="+city)
             .then(res => {
                 dispatch(getHospitalsSuccessAction(res.data));
             })
             .catch(
                 (err) => {
-                    // Swal.fire({
-                    //     icon: 'error',
-                    //     title: 'Oops...',
-                    //     text: 'Something went wrong.',
-                    //     confirmButtonColor: '#db3d44',
-                    //     confirmButtonText: 'OK'
-                    // })
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong.',
+                        confirmButtonColor: '#db3d44',
+                        confirmButtonText: 'OK'
+                    })
                     dispatch(getHospitalsFailureAction())
                 }
             )

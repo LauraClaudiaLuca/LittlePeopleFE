@@ -19,24 +19,28 @@ class AdminDashboard extends React.Component {
             invalidEmail: undefined,
             invalidHospital: undefined,
             volunteers: [],
+            hospitals: [],
             searchMode: false,
         }
     }
     componentDidMount() {
+        this.props.getHospitals(this.props.userReducer.city);
+        this.props.getVolunteers(this.props.userReducer.city);
         this.setState({
             selectedHospitalId: -1,
             filter: "",
             invalidEmail: undefined,
             invalidHospital: undefined,
+            volunteers: this.props.adminReducer.volunteers,
+            hospitals: this.props.adminReducer.hospitals,
         })
-        this.props.getHospitals();
-        this.props.getVolunteers();
+
     }
 
-    componentDidUpdate(prevProps) {
+    componentWillUpdate(prevProps) {
         const { adminReducer: prevAdminReducer } = prevProps;
         const { adminReducer: nextAdminReducer } = this.props;
-        if (prevAdminReducer !== nextAdminReducer) {
+        if (prevAdminReducer.volunteers !== nextAdminReducer.volunteers) {
             this.setState({
                 volunteers: [...nextAdminReducer.volunteers]
             })
@@ -44,7 +48,6 @@ class AdminDashboard extends React.Component {
     }
 
     save = () => {
-        console.log("hello")
         this.props.addVolunteer(this.state.email, this.state.selectedHospitalId, this.props.userReducer.city);
         this.setState({
             searchMode: false,
@@ -60,12 +63,12 @@ class AdminDashboard extends React.Component {
             cancelButtonText: "No",
             showCancelButton: true,
             confirmButtonColor: '#db3d44',
-            position:'center'
-        }).then((isConfirm) =>{
-            if (isConfirm.value===true) {
+            position: 'center'
+        }).then((isConfirm) => {
+            if (isConfirm.value === true) {
                 deleteConfirm(id)
             }
-            else{
+            else {
             }
         });
     }
@@ -75,12 +78,12 @@ class AdminDashboard extends React.Component {
             searchMode: false,
         })
         document.getElementById("search").value = "";
-        this.props.deleteVolunteer(id,this.props.userReducer.city);
+        this.props.deleteVolunteer(id, this.props.userReducer.city);
         Swal.fire({
             icon: 'success',
             title: 'Volunteer deleted!',
             confirmButtonColor: '#db3d44',
-            confirmButtonText:'Got it!'
+            confirmButtonText: 'Got it!'
         })
     }
 
@@ -116,10 +119,27 @@ class AdminDashboard extends React.Component {
         }
     }
     searchVolunteer = () => {
-        var filtered = this.props.adminReducer.volunteers.filter(v => v.firstName.toLowerCase().startsWith(this.state.filter.toLowerCase()));
+        var toFilter = this.uniformVolunteers(this.props.adminReducer.volunteers);
+        var filtered = toFilter.filter(v => v.firstName.toLowerCase().startsWith(this.state.filter.toLowerCase()));
         this.setState({
             volunteers: [...filtered]
         })
+    }
+
+    uniformVolunteers = (arr) => {
+        var newArr = [...arr];
+        newArr.forEach(v => {
+            if (v.firstName === null) {
+                v.firstName = "unknown";
+            }
+            if (v.phone === null) {
+                v.phone = "unknown";
+            }
+            if (v.surname === null) {
+                v.surname = "unknown";
+            }
+        })
+        return newArr;
     }
 
     validate = () => {
@@ -154,7 +174,6 @@ class AdminDashboard extends React.Component {
         )
     }
     render() {
-        console.log(this.state.volunteers)
         return (
             <Container fluid style={{ backgroundColor: "#f8f9fa", height: "93vh" }}>
                 <Row>
@@ -198,10 +217,11 @@ class AdminDashboard extends React.Component {
                                 </InputGroup>
                             </Col>
                         </Row>
-                        <VolunteerListStatic
-                            volunteers={this.state.searchMode === false ? this.props.adminReducer.volunteers : this.state.volunteers}
-                            onDelete={this.delete}
-                        />
+                                <VolunteerListStatic
+                                    volunteers={this.state.searchMode === false ? this.props.adminReducer.volunteers : this.state.volunteers}
+                                    onDelete={this.delete}
+                                    uniform={this.uniformVolunteers}
+                                />   
                     </Col>
                     <Col xs={2}>
                     </Col>
@@ -223,7 +243,7 @@ const mapDispachToProps = dispatch => {
     return {
         getVolunteers: (city) => dispatch(getVolunteersActionCreator(city)),
         getHospitals: (city) => dispatch(getHospitalsActionCreator(city)),
-        addVolunteer: (email, hospitalId) => dispatch(addActionCreator(email, hospitalId)),
+        addVolunteer: (email, hospitalId, city) => dispatch(addActionCreator(email, hospitalId, city)),
         deleteVolunteer: (volunteerId, city) => dispatch(deleteActionCreator(volunteerId, city)),
     }
 }
