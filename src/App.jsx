@@ -41,8 +41,8 @@ class App extends Component {
         <Header loggedIn={isLoggedIn} user={user}/>
 
         <Switch>
-          <PrivateRoute exact path='/' component={Home} authorized={isLoggedIn} redir="/login" />
-          <PrivateRoute path='/home' component={Home} authorized={isLoggedIn} redir="/login" />
+          <PrivateRoute exact path='/' component={Home} authorized={true} redir="/login" />
+          <PrivateRoute path='/home' component={Home} authorized={true} redir="/login" />
           <PrivateRoute path='/news' component={News} authorized={isLoggedIn} redir="/login" />
           <PrivateRoute path='/profile' component={Profile} authorized={isLoggedIn} redir="/login" />
           <PrivateRoute path='/calendar' component={Calendar} authorized={isLoggedIn} redir="/login" />
