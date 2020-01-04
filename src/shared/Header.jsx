@@ -58,9 +58,11 @@ class Header extends React.Component {
         }
         return (
             <Navbar bg="light" sticky="top">
-                <Link to="/" id="logo" className="header-link">
-                    <img id="logo-image" src="images/little-people-header-img.png"></img>
-                </Link>
+                <Navbar.Brand>
+                    <Link to="/" id="logo" className="header-link">
+                        <img id="logo-image" src="images/little-people-header-img.png"></img>
+                    </Link>
+                </Navbar.Brand>
 
                 {links}
             </Navbar>
