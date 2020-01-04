@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import { editProfileActionCreator } from '../actions/profileActionCreators';
 import { withRouter } from 'react-router-dom'
 import Swal from 'sweetalert2'
-import { history } from '../../shared/history'
 import {getUserData} from '../../shared/actions'
 
 

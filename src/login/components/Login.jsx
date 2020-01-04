@@ -1,9 +1,8 @@
 import { Col, Row, Form, Button, Container, Spinner } from "react-bootstrap"
 import React from 'react'
 import { connect } from 'react-redux'
-import { loginActionCreator } from "../actions/loginActionCreators"
+import { loginActionCreator } from "../actions/actionCreators"
 import { withRouter } from 'react-router-dom'
-import AlertDialog from '../../shared/AlertDialog'
 
 /**
  * @author [Laura]
@@ -39,7 +38,7 @@ class Login extends React.Component {
     }
 
     render() {
-        const { isFetching, isError, message } = this.props
+        const { isFetching } = this.props
         let buttonContent = 'Login'
         let disabled = false
         if (isFetching) {
@@ -49,14 +48,8 @@ class Login extends React.Component {
             )
         }
 
-        let errorMessage = null
-        if (isError) {
-            errorMessage = <AlertDialog message={message} danger/>
-        }
-
         return (
             <Container fluid style={{ backgroundImage: "url(./images/login_pic.jpg)", height: "100vh", overflow: "hidden" }}>
-                {errorMessage}
                 <Row style={{ height: "100%" }}>
                     <Col> </Col>
                     <Col xs lg="3" style={{ background: "rgba(255,255,255, 0.7)" }}>
@@ -81,9 +74,9 @@ class Login extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    isFetching: state.login.isFetching,
-    isError: state.login.loginError,
-    message: state.login.message
+    isFetching: state.auth.isFetching,
+    isError: state.auth.loginError,
+    message: state.auth.message
 })
 
 const mapDispatchToProps = dispatch => ({
