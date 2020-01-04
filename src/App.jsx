@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch } from 'react-router-dom'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import PrivateRoute from './shared/PrivateRoute'
 import Home from './home/containers/Home'
 import Login from './login/components/Login'
@@ -11,7 +11,7 @@ import Footer from './shared/Footer'
 import PageNotFound from './shared/PageNotFound'
 import { connect } from 'react-redux'
 import { getUserData } from './shared/actions'
-import { loginSuccessAction } from './login/actions/loginActionCreators'
+import { loginSuccessAction } from './login/actions/actionCreators'
 import AdminDashboard from './admin/containers/AdminDashboard'
 
 class App extends Component {
@@ -38,17 +38,17 @@ class App extends Component {
 
     return (
       <BrowserRouter>
-        <Header loggedIn={isLoggedIn} user={user}/>
+        <Header />
 
         <Switch>
-          <PrivateRoute exact path='/' component={Home} authorized={true} redir="/login" />
-          <PrivateRoute path='/home' component={Home} authorized={true} redir="/login" />
+          <Route exact path='/' component={Home} />
+          <Route path='/home' component={Home} />
           <PrivateRoute path='/news' component={News} authorized={isLoggedIn} redir="/login" />
           <PrivateRoute path='/profile' component={Profile} authorized={isLoggedIn} redir="/login" />
           <PrivateRoute path='/calendar' component={Calendar} authorized={isLoggedIn} redir="/login" />
           <PrivateRoute path='/login' component={Login} authorized={!isLoggedIn} redir="/" />
           <PrivateRoute path='/admin' component={AdminDashboard} authorized={isLoggedIn && user.isAdmin} redir="/login"/>
-          <PrivateRoute component={PageNotFound} authorized={isLoggedIn} redir="/login" />
+          <Route component={PageNotFound} />
         </Switch>
 
         <Footer />
@@ -59,8 +59,8 @@ class App extends Component {
 }
 
 const mapStateToProps = state => ({
-  isLoggedIn: state.login.isLoggedIn,
-  message: state.login.message,
+  isLoggedIn: state.auth.isLoggedIn,
+  message: state.auth.message,
   user: state.user,
   profile: state.profileReducer
 })

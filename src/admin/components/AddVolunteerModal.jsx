@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, InputGroup, FormControl, Form } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
 import { FaUserPlus } from 'react-icons/fa'
 
 

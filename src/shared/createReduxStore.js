@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
-import loginReducer from "../login/reducers/loginReducer"
+import authReducer from "../login/reducers"
 import profileReducer from "../profile/reducers/profileReducer"
 import userDataReducer from './reducers'
 import adminReducer from '../admin/reducers/adminReducer'
@@ -18,7 +18,7 @@ export const createReduxStore = () => {
 
     const rootReducer = combineReducers({
         user: userDataReducer,
-        login : loginReducer,
+        auth : authReducer,
         profileReducer: profileReducer,
         adminReducer : adminReducer,
     })

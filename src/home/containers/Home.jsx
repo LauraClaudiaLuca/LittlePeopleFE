@@ -10,7 +10,7 @@ class Home extends React.Component {
               </div>
               <div className="col-md-8">
                 <div className="card">
-                  <img alt="kids-image" src="images/kids.png" id="kids" className="card-img-top"></img>
+                  <img alt="kids" src="images/kids.png" id="kids" className="card-img-top"></img>
                   <div className="card-body">
                     <h3 className="card-title"><b>Little People Association Romania</b></h3>
                     <p className="card-text">
@@ -27,7 +27,6 @@ class Home extends React.Component {
                     All the efforts of the Little People Association revolve around the patient.
                     Every activity we plan, every camp we organise and every project we develop focuses first and foremost on the needs of the patient and his/her family!
                     </p>
-                    <tr></tr>
                     <p>
                     The Little People Association is fully committed to not expose a patient or a minor who is sick or in pain to a negative light,
                     and not to use images of human suffering for the purpose of raising funds or for financial gain.

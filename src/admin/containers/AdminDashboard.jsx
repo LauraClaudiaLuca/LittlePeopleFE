@@ -1,10 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import VolunteerListStatic from "../components/VolunteerListStatic"
-import { Container, Row, Col, Button, Form, FormControl, InputGroup, ButtonToolbar } from 'react-bootstrap'
-import { FaUserPlus, FaSearch } from 'react-icons/fa'
+import { Container, Row, Col, FormControl, InputGroup } from 'react-bootstrap'
+import { FaSearch } from 'react-icons/fa'
 import AddVolunteerModal from "../components/AddVolunteerModal"
-import ReactDOM from 'react-dom'
 import { getVolunteersActionCreator, getHospitalsActionCreator, addActionCreator, deleteActionCreator } from '../actions/adminActionCreator'
 import Swal from 'sweetalert2'
 
@@ -99,7 +98,7 @@ class AdminDashboard extends React.Component {
         )
     }
     onChangeFilter = (event) => {
-        const { value, name } = event.target;
+        const { value } = event.target;
         if (value !== "") {
             this.setState({
                 filter: value,
@@ -189,7 +188,7 @@ class AdminDashboard extends React.Component {
                                     hospitals={this.props.adminReducer.hospitals}
                                     onChange={this.onChange}
                                     selectedOption={this.selectedOption}
-                                    defaultValSelected={this.state.selectedHospitalId == -1}
+                                    defaultValSelected={this.state.selectedHospitalId === -1}
                                     undo={this.undo}
                                     invalidEmail={this.state.invalidEmail}
                                     invalidHospital={this.state.invalidHospital}
