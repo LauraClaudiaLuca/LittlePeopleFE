@@ -2,10 +2,9 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { ScheduleComponent, Day, Week, TimelineViews, Month, 
          ViewsDirective, ViewDirective, Inject, DragAndDrop } from '@syncfusion/ej2-react-schedule';
-import { loadActivities } from '../actions'
+import { loadActivities, deleteActivity } from '../actions'
 import { Container } from 'react-bootstrap'
-import { DateTimePickerComponent } from '@syncfusion/ej2-react-calendars';
-import { DropDownListComponent } from '@syncfusion/ej2-react-dropdowns';
+import ActivityForm from '../components/ActivityForm'
 
 class Calendar extends React.Component {
     
@@ -22,7 +21,7 @@ class Calendar extends React.Component {
     }
 
     deleteActivity(activity) {
-
+        this.props.deleteActivity(activity.Id)
     }
 
     onActionBegin(args) {
@@ -42,51 +41,20 @@ class Calendar extends React.Component {
         }
     }
 
-    getStatus(status) {
-        switch (status) {
-            case 'ACCEPTED':
-                return 'Accepted'
-            case 'IN_PROGRESS':
-                return 'In Progress'
-            case 'DONE':
-                return 'Done'
-            case 'REJECTED':
-                return 'Rejected'
-            case 'PENDING':
-                return 'Pending'
-        }
-    }
 
     editorTemplate(props) {
-        console.log(props)
-        return (props !== undefined ? <table className="custom-event-editor" style={{ width: '100%', cellpadding: '5' }}><tbody>
-            <tr><td className="e-textlabel"> <b>Title</b></td><td colSpan={4}>
-                <input id="Summary" className="e-field e-input" type="text" name="Subject" style={{ width: '100%' }} />
-            </td></tr>
-            <tr><td className="e-textlabel"><b>Status</b></td><td colSpan={4}>
-                <DropDownListComponent id="EventType" placeholder='Choose status' data-name="EventType" className="e-field" style={{ width: '100%' }} dataSource={['In Progress', 'Pending', 'Accepted', 'Done', 'Rejected']} value={this.getStatus(props.EventType) || null}></DropDownListComponent>
-            </td></tr>
-            <tr><td className="e-textlabel"><b>Start Time</b></td><td colSpan={4}>
-                <DateTimePickerComponent format='dd/MM/yy hh:mm a' id="StartTime" data-name="StartTime" value={new Date(props.startTime || props.StartTime)} className="e-field"></DateTimePickerComponent>
-            </td></tr>
-            <tr><td className="e-textlabel"><b>End Time</b></td><td colSpan={4}>
-                <DateTimePickerComponent format='dd/MM/yy hh:mm a' id="EndTime" data-name="EndTime" value={new Date(props.endTime || props.EndTime)} className="e-field"></DateTimePickerComponent>
-            </td></tr>
-            <tr><td className="e-textlabel"><b>Location</b></td><td colSpan={4}>
-                <input id="Location" className="e-field e-input" type="text" name="Location" style={{ width: '100%' }} />
-            </td></tr>
-
-            <tr><td className="e-textlabel"><b>Description</b></td><td colSpan={4}>
-                <textarea id="Description" className="e-field e-input" name="Description" rows={3} cols={50} style={{ width: '100%', height: '60px !important', resize: 'vertical' }}></textarea>
-            </td></tr></tbody></table> : <div></div>);
+        return <ActivityForm properties={props}/>
     }
 
     render() {
+        let { isAdmin } = this.props
+        let readOnly = isAdmin ? false : true
         return (
             <Container>
                 <ScheduleComponent
                     width='100%'
                     height='100%'
+                    readonly={readOnly}
                     selectedDate={Date.now()}
                     editorTemplate={this.editorTemplate.bind(this)}
                     eventSettings={{ dataSource: this.props.activities, fields: this.fields }}
@@ -123,11 +91,13 @@ const mapActivitesForScheduler = activities => {
 
 const mapStateToProps = state => ({
     activities: mapActivitesForScheduler(state.calendar.activities),
-    isFetching: state.calendar.isFetching
+    isFetching: state.calendar.isFetching,
+    isAdmin: state.user.isAdmin
 })
 
 const mapDispachToProps = dispatch => ({
-    loadActivities: () => dispatch(loadActivities())
+    loadActivities: () => dispatch(loadActivities()),
+    deleteActivity: id => dispatch(deleteActivity(id))
 })
 
 export default connect(mapStateToProps, mapDispachToProps)(Calendar)

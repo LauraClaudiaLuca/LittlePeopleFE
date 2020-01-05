@@ -61,3 +61,44 @@ export const loadActivities = dispatch => {
         })
     }
 }
+
+const deleteActivityRequest = () => {
+    return {
+        type: DELETE_ACTIVITY
+    }
+}
+
+const deleteActivitySuccess = () => {
+    return {
+        type: DELETE_ACTIVITY_SUCCESS
+    }
+}
+
+const deleteActivityFailure = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Could not delete activity!',
+        confirmButtonColor: '#db3d44',
+        confirmButtonText: 'OK'
+    })
+    return {
+        type: DELETE_ACTIVITY_FAILURE
+    }
+}
+
+export const deleteActivity = (activityId, dispatch) => {
+    return dispatch => {
+        dispatch(deleteActivityRequest())
+        console.log(activityId);
+        
+        let token = JSON.parse(localStorage.getItem('token'))
+        return axiosInstance.post(`http://localhost:8080/api/activity/leader/delete?activityId=${activityId}`, {}, {
+            headers: {
+                authorization: token.userToken
+            }
+        })
+        .then(() => dispatch(deleteActivitySuccess()))
+        .catch(() => dispatch(deleteActivityFailure()))
+    }
+}
