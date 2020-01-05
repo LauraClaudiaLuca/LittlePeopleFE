@@ -12,6 +12,18 @@
   background-color: #D31122;
 }
 
+#page-numbers {
+  list-style-type: none;
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 2px;
+}
+
+.page-number {
+  padding: 2px;
+}
+
 em {
   font-family: 'EB Garamond', serif;
   font-size: 3.5em;

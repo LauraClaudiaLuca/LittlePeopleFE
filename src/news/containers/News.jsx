@@ -35,8 +35,80 @@ class News extends React.Component {
               title: "Report 2",
               text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
             },
+          },
+          {
+            description: "description1",
+            category: "category1",
+            title: "Activity 1",
+            status: "done",
+            startDateAndTime: "2020-01-05T14:00",
+            endDateAndTime: "2020-01-05T16:00",
+            hospital: 1,
+            report: {
+              description: "description1",
+              category: "category1",
+              title: "Report 1",
+              text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            },
+          },
+          {
+            description: "description2",
+            category: "category2",
+            title: "Activity 1",
+            status: "done",
+            startDateAndTime: "2020-01-05T16:00",
+            endDateAndTime: "2020-01-05T18:00",
+            hospital: 2,
+            report: {
+              description: "description2",
+              category: "category2",
+              title: "Report 2",
+              text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            },
+          },
+          {
+            description: "description1",
+            category: "category1",
+            title: "Activity 1",
+            status: "done",
+            startDateAndTime: "2020-01-05T14:00",
+            endDateAndTime: "2020-01-05T16:00",
+            hospital: 1,
+            report: {
+              description: "description1",
+              category: "category1",
+              title: "Report 1",
+              text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            },
+          },
+          {
+            description: "description2",
+            category: "category2",
+            title: "Activity 1",
+            status: "done",
+            startDateAndTime: "2020-01-05T16:00",
+            endDateAndTime: "2020-01-05T18:00",
+            hospital: 2,
+            report: {
+              description: "description2",
+              category: "category2",
+              title: "Report 2",
+              text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            },
           }
         ]
+        this.state = {
+          allActivities: this.activities,
+          currentPage: 1,
+          activitiesPerPage: 3,
+        }
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(event) {
+      this.setState({
+        currentPage: Number(event.target.id)
+      });
     }
 
     activityComponent(activity) {
@@ -57,8 +129,33 @@ class News extends React.Component {
         )
     }
 
+    pageNumberComponent(number) {
+      return (
+        <li class="page-number"
+          key={number}
+          id={number}
+          onClick={this.handleClick}
+        >
+          {number}
+        </li>
+      );
+    }
+
     render() {
-      let reports = this.activities.map(activity => this.activityComponent(activity))
+      const { allActivities, currentPage, activitiesPerPage } = this.state;
+      const indexOfLastActivity = currentPage * activitiesPerPage;
+      const indexOfFirstActivity = indexOfLastActivity - activitiesPerPage;
+      const currentActivities = allActivities.slice(indexOfFirstActivity, indexOfLastActivity);
+
+      let reports = currentActivities.map(activity => this.activityComponent(activity))
+
+      const pageNumbers = [];
+      for (let i = 1; i <= Math.ceil(allActivities.length / activitiesPerPage); i++) {
+        pageNumbers.push(i);
+      }
+
+      const renderPageNumbers = pageNumbers.map(number => this.pageNumberComponent(number))
+
       return (
         <React.Fragment>
           <em>Reports</em>
@@ -71,6 +168,9 @@ class News extends React.Component {
               )
             )
             }
+          </ul>
+          <ul id="page-numbers">
+            {renderPageNumbers}
           </ul>
         </React.Fragment>
       )
