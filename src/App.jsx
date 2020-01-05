@@ -40,7 +40,7 @@ class App extends Component {
         <Route exact path='/' component={Calendar} />
         <PrivateRoute path='/calendar' component={Calendar} authorized={isLoggedIn} redir="/login" />
         <PrivateRoute path='/news' component={News} authorized={isLoggedIn} redir="/login" />
-        <PrivateRoute path='/profile' component={Profile} authorized={isLoggedIn} redir="/login" />  
+        <PrivateRoute path='/profile' component={Profile} authorized={isLoggedIn} redir="/login" />
         <PrivateRoute path='/admin' component={AdminDashboard} authorized={isLoggedIn && user.isAdmin} redir="/login" />
         <Route component={PageNotFound} />
       </Switch>
@@ -53,6 +53,7 @@ class App extends Component {
       <Switch>
         <Route exact path='/' component={Home} />
         <Route path='/home' component={Home} />
+        <Route path='/news' component={News} />
         <Route path='/login' component={Login} />
         <Route component={PageNotFound} />
       </Switch>
