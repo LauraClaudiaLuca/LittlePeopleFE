@@ -33,24 +33,40 @@ class App extends Component {
   }
 
 
-  render() {
+  loggedInRoutes() {
     let { isLoggedIn, user } = this.props
+    return (
+      <Switch>
+        <Route exact path='/' component={Calendar} />
+        <PrivateRoute path='/calendar' component={Calendar} authorized={isLoggedIn} redir="/login" />
+        <PrivateRoute path='/news' component={News} authorized={isLoggedIn} redir="/login" />
+        <PrivateRoute path='/profile' component={Profile} authorized={isLoggedIn} redir="/login" />  
+        <PrivateRoute path='/admin' component={AdminDashboard} authorized={isLoggedIn && user.isAdmin} redir="/login" />
+        <Route component={PageNotFound} />
+      </Switch>
+
+    )
+  }
+
+  loggedOutRoutes() {
+    return (
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route path='/home' component={Home} />
+        <Route path='/login' component={Login} />
+        <Route component={PageNotFound} />
+      </Switch>
+
+    )
+  }
+
+  render() {
+    let routes = this.props.isLoggedIn ? this.loggedInRoutes() : this.loggedOutRoutes()
 
     return (
       <BrowserRouter>
         <Header />
-
-        <Switch>
-          <Route exact path='/' component={Home} />
-          <Route path='/home' component={Home} />
-          <PrivateRoute path='/news' component={News} authorized={isLoggedIn} redir="/login" />
-          <PrivateRoute path='/profile' component={Profile} authorized={isLoggedIn} redir="/login" />
-          <PrivateRoute path='/calendar' component={Calendar} authorized={isLoggedIn} redir="/login" />
-          <PrivateRoute path='/login' component={Login} authorized={!isLoggedIn} redir="/" />
-          <PrivateRoute path='/admin' component={AdminDashboard} authorized={isLoggedIn && user.isAdmin} redir="/login"/>
-          <Route component={PageNotFound} />
-        </Switch>
-
+        { routes }
         <Footer />
       </BrowserRouter>
 

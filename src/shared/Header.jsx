@@ -11,9 +11,8 @@ class Header extends React.Component {
         return (
             <React.Fragment>
                 <Nav className="mr-auto">
-                    <Link className="header-link" to="/"> Home </Link>
-                    <Link className="header-link" to="/news"> News </Link>
                     <Link className="header-link" to="/calendar"> Calendar </Link>
+                    <Link className="header-link" to="/news"> Reports </Link>
                     {this.props.user.isAdmin
                         ?
                         <Link className="header-link" to="/admin"> Volunteers </Link>
