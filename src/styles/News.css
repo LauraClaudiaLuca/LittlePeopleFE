@@ -12,7 +12,7 @@
   background-color: #D31122;
 }
 
-#page-numbers {
+#pagination {
   list-style-type: none;
   display: flex;
   justify-content: center;
@@ -20,8 +20,16 @@
   padding: 2px;
 }
 
-.page-number {
-  padding: 2px;
+li {
+  padding: 8px;
+}
+
+li:hover:not(.current-page):not(.report) {
+  background-color: #E0E0E0;
+}
+
+.current-page {
+  border-style: outset;
 }
 
 em {
@@ -47,4 +55,8 @@ em {
   margin: 0 0.6em;
   font-size: 0.5em;
 }
+}
+
+.arrow {
+  bottom: 10px !important;
 }
