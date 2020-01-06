@@ -16,6 +16,8 @@ export default class ActivityForm extends React.Component {
                 return 'Rejected'
             case 'PENDING':
                 return 'Pending'
+            default:
+                break
         }
     }
 
@@ -27,8 +29,6 @@ export default class ActivityForm extends React.Component {
             )
         }
         let hospitals = this.props.hospitals.map(hospital => hospital.name)
-        console.log(this.props.city);
-        
         return (
             <table className="custom-event-editor" style={{ width: '100%', cellpadding: '5' }}>
             <tbody>

@@ -101,8 +101,38 @@ const createActivityFailure = () => {
 
 export const createActivity = (activity, dispatch) => {
     return dispatch => {
+        delete activity.id
         return axiosInstance.post('http://localhost:8080/api/activity/leader/add', activity)
         .then(res => dispatch(createActivitySuccess(res.data)))
         .catch(() => dispatch(createActivityFailure()))
+    }
+}
+
+const updateActivitySuccess = activity => {
+    return {
+        type: UPDATE_ACTIVITY_SUCCEESS,
+        activity
+    }
+}
+
+const updateActivityFailure = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Could not update the activity!',
+        confirmButtonColor: '#db3d44',
+        confirmButtonText: 'OK'
+    })
+    return {
+        type: UPDATE_ACTIVITY_FAILURE
+    }
+}
+
+export const updateActivity = (activity, dispatch) => {
+    console.log(activity)
+    return dispatch => {
+        return axiosInstance.post('http://localhost:8080/api/activity/leader/update', activity)
+            .then(res => dispatch(updateActivitySuccess(res.data)))
+            .catch(() => dispatch(updateActivityFailure()))
     }
 }

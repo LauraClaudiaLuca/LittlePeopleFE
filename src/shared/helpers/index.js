@@ -6,7 +6,7 @@ export const convertDateToString = date => {
 }
 
 export const mapActivityToSchedulerEvent = (activity, city, hospitals) => {
-    let hospital = hospitals.find(h => h.id == activity.hospitalId)
+    let hospital = hospitals.find(h => h.id === activity.hospitalId)
     let hospitalName = hospital ? hospital.name : ''
     return {
         Id: activity.id,
@@ -26,6 +26,7 @@ export const mapSchedulerEventToActivity = (event, hospitals) => {
     let hospital = hospitals.find(h => h.name === event.Location)
     let hospitalId = hospital ? hospital.id : hospitals[0].id
     return {
+        id: event.Id,
         title: event.Subject,
         description: event.Description || '',
         category: event.Category || 'Spitalizare',
