@@ -29,9 +29,12 @@ const calendarReducer = (state = intialState, action) => {
                 isFetching: true
             }
         case DELETE_ACTIVITY_SUCCESS:
+            let index = state.activities.findIndex(activity => activity.id === action.activityId)
+            let activities = [...state.activities]
+            activities.splice(index, 1)
             return {
                 isFetching: false,
-                ...state
+                activities
             }
         case DELETE_ACTIVITY_FAILURE:
             return {

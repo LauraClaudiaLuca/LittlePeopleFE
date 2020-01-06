@@ -46,13 +46,9 @@ const loadActivitiesRequest = () => {
 
 export const loadActivities = dispatch => {
     return dispatch => {
-        dispatch(loadActivitiesRequest())
+        dispatch(loadActivitiesRequest()) 
         let token = JSON.parse(localStorage.getItem('token'))
-        return axiosInstance.get(`http://localhost:8080/api/activity/getActivitiesByCity?city=${token.city}`, {}, {
-            headers: {
-                authorization: token.userToken
-            }
-        })
+        return axiosInstance.get(`http://localhost:8080/api/activity/getActivitiesByCity?city=${token.city}`)
         .then(res => {
             dispatch(loadActivitiesSuccess(res.data))
         })
@@ -68,9 +64,10 @@ const deleteActivityRequest = () => {
     }
 }
 
-const deleteActivitySuccess = () => {
+const deleteActivitySuccess = activityId => {
     return {
-        type: DELETE_ACTIVITY_SUCCESS
+        type: DELETE_ACTIVITY_SUCCESS,
+        activityId
     }
 }
 
@@ -89,15 +86,8 @@ const deleteActivityFailure = () => {
 
 export const deleteActivity = (activityId, dispatch) => {
     return dispatch => {
-        dispatch(deleteActivityRequest())
-        console.log(activityId);
-        
-        let token = JSON.parse(localStorage.getItem('token'))
-        return axiosInstance.post(`http://localhost:8080/api/activity/leader/delete?activityId=${activityId}`, {}, {
-            headers: {
-                authorization: token.userToken
-            }
-        })
+        //dispatch(deleteActivityRequest())
+        return axiosInstance.post(`http://localhost:8080/api/activity/leader/delete?activityId=${activityId}`)
         .then(() => dispatch(deleteActivitySuccess()))
         .catch(() => dispatch(deleteActivityFailure()))
     }
