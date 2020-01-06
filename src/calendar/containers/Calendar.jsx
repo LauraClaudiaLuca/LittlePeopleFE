@@ -13,9 +13,6 @@ class Calendar extends React.Component {
     componentDidMount() {
         this.props.loadActivities()
         this.props.getHospitals(this.props.city)
-        this.setState({
-            firstLoad: false
-        })
     }
 
     createActivity(event) {
