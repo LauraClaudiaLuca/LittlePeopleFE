@@ -5,15 +5,12 @@ export const LOAD_ACTIVITIES = 'GET_ACTIVITIES'
 export const LOAD_ACTIVITIES_SUCCESS = 'LOAD_ACTIVITIES_SUCCESS'
 export const LOAD_ACTIVITIES_FAILURE = 'LOAD_ACTIVITIES_FAILURE'
 
-export const ADD_ACTIVITY = 'ADD_ACTIVITY'
-export const ADD_ACTIVITY_SUCCESS = 'ADD_ACTIVITY_SUCCESS'
-export const ADD_ACTIVITY_FAILURE = 'ADD_ACTIVITY_FAILURE'
+export const CREATE_ACTIVITY_SUCCESS = 'ADD_ACTIVITY_SUCCESS'
+export const CREATE_ACTIVITY_FAILURE = 'ADD_ACTIVITY_FAILURE'
 
-export const UPDATE_ACTIVITY = 'UPDATE_ACTIVITY'
 export const UPDATE_ACTIVITY_SUCCEESS = 'UPDATE_ACTIVITY_SUCCESS'
 export const UPDATE_ACTIVITY_FAILURE = 'UPDATE_ACTIVITY_FAILURE'
 
-export const DELETE_ACTIVITY = 'DELETE_ACTIVITY'
 export const DELETE_ACTIVITY_SUCCESS = 'DELETE_ACTIVITY_SUCCESS'
 export const DELETE_ACTIVITY_FAILURE = 'DELETE_ACTIVITY_FAILURE'
 
@@ -49,18 +46,8 @@ export const loadActivities = dispatch => {
         dispatch(loadActivitiesRequest()) 
         let token = JSON.parse(localStorage.getItem('token'))
         return axiosInstance.get(`http://localhost:8080/api/activity/getActivitiesByCity?city=${token.city}`)
-        .then(res => {
-            dispatch(loadActivitiesSuccess(res.data))
-        })
-        .catch(() => {
-            dispatch(loadActivitiesFailure())
-        })
-    }
-}
-
-const deleteActivityRequest = () => {
-    return {
-        type: DELETE_ACTIVITY
+        .then(res => dispatch(loadActivitiesSuccess(res.data)))
+        .catch(() => dispatch(loadActivitiesFailure()))
     }
 }
 
@@ -86,9 +73,36 @@ const deleteActivityFailure = () => {
 
 export const deleteActivity = (activityId, dispatch) => {
     return dispatch => {
-        //dispatch(deleteActivityRequest())
         return axiosInstance.post(`http://localhost:8080/api/activity/leader/delete?activityId=${activityId}`)
-        .then(() => dispatch(deleteActivitySuccess()))
+        .then(() => dispatch(deleteActivitySuccess(activityId)))
         .catch(() => dispatch(deleteActivityFailure()))
+    }
+}
+
+const createActivitySuccess = activity => {
+    return {
+        type: CREATE_ACTIVITY_SUCCESS,
+        activity
+    }
+}
+
+const createActivityFailure = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Could not create activity!',
+        confirmButtonColor: '#db3d44',
+        confirmButtonText: 'OK'
+    })
+    return {
+        type: CREATE_ACTIVITY_FAILURE
+    }
+}
+
+export const createActivity = (activity, dispatch) => {
+    return dispatch => {
+        return axiosInstance.post('http://localhost:8080/api/activity/leader/add', activity)
+        .then(res => dispatch(createActivitySuccess(res.data)))
+        .catch(() => dispatch(createActivityFailure()))
     }
 }

@@ -1,5 +1,6 @@
 import { LOAD_ACTIVITIES, LOAD_ACTIVITIES_SUCCESS, LOAD_ACTIVITIES_FAILURE, 
-         DELETE_ACTIVITY, DELETE_ACTIVITY_SUCCESS, DELETE_ACTIVITY_FAILURE } from '../actions'
+         DELETE_ACTIVITY_SUCCESS, DELETE_ACTIVITY_FAILURE, 
+         CREATE_ACTIVITY_SUCCESS, CREATE_ACTIVITY_FAILURE } from '../actions'
 
 const intialState = {
     isFetching: false,
@@ -18,16 +19,6 @@ const calendarReducer = (state = intialState, action) => {
                 isFetching: false,
                 activities: action.activities
             }
-        case LOAD_ACTIVITIES_FAILURE:
-            return {
-                isFetching: false,
-                activities: []
-            }
-        case DELETE_ACTIVITY:
-            return {
-                ...state,
-                isFetching: true
-            }
         case DELETE_ACTIVITY_SUCCESS:
             let index = state.activities.findIndex(activity => activity.id === action.activityId)
             let activities = [...state.activities]
@@ -36,7 +27,15 @@ const calendarReducer = (state = intialState, action) => {
                 isFetching: false,
                 activities
             }
-        case DELETE_ACTIVITY_FAILURE:
+        case CREATE_ACTIVITY_SUCCESS:
+            return {
+                isFetching: false,
+                activities: [
+                    ...state.activities,
+                    action.activity
+                ]
+            }
+        case LOAD_ACTIVITIES_FAILURE || DELETE_ACTIVITY_FAILURE || CREATE_ACTIVITY_FAILURE:
             return {
                 isFetching: false,
                 ...state

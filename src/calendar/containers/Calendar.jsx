@@ -1,19 +1,23 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { ScheduleComponent, Day, Week, TimelineViews, Month, 
-         ViewsDirective, ViewDirective, Inject, DragAndDrop } from '@syncfusion/ej2-react-schedule';
-import { loadActivities, deleteActivity } from '../actions'
+         ViewsDirective, ViewDirective, Inject, DragAndDrop } from '@syncfusion/ej2-react-schedule'
+import { loadActivities, deleteActivity, createActivity } from '../actions'
 import { Container } from 'react-bootstrap'
 import ActivityForm from '../components/ActivityForm'
+import { mapSchedulerEventToActivity, mapActivitesForScheduler } from '../../shared/helpers'
+import { getHospitalsActionCreator } from '../../admin/actions/adminActionCreator'
 
 class Calendar extends React.Component {
     
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         this.props.loadActivities()
+        this.props.getHospitals(this.props.city)
     }
 
-    createActivity(activity) {
-
+    createActivity(event) {
+        let activity = mapSchedulerEventToActivity(event, this.props.hospitals)
+        this.props.createActivity(activity)
     }
 
     updateActivity(activity) {
@@ -21,6 +25,7 @@ class Calendar extends React.Component {
     }
 
     deleteActivity(activity) {
+        console.log(activity);
         this.props.deleteActivity(activity.Id)
     }
 
@@ -34,16 +39,19 @@ class Calendar extends React.Component {
         }
     }
 
-    onPopupOpen(args) {
-        if (args.type === 'Editor') {
-            let statusElement = args.element.querySelector('#EventType');
-            statusElement.setAttribute('name', 'EventType');
-        }
-    }
+    // onPopupOpen(args) {
+    //     if (args.type === 'Editor') {
+    //         let statusElement = args.element.querySelector('#EventType');
+    //         statusElement.setAttribute('name', 'EventType');
+    //     }
+    // }
 
 
     editorTemplate(props) {
-        return <ActivityForm properties={props}/>
+        return <ActivityForm 
+            properties={props} 
+            city={this.props.city}
+            hospitals={this.props.hospitals} />
     }
 
     render() {
@@ -56,9 +64,9 @@ class Calendar extends React.Component {
                     height='100%'
                     readonly={readOnly}
                     selectedDate={Date.now()}
+                    showQuickInfo={true}
                     editorTemplate={this.editorTemplate.bind(this)}
                     eventSettings={{ dataSource: this.props.activities, fields: this.fields }}
-                    popupOpen={this.onPopupOpen.bind(this)}
                     actionBegin={this.onActionBegin.bind(this)}>
 
                     <ViewsDirective>
@@ -74,29 +82,18 @@ class Calendar extends React.Component {
     }
 }
 
-const mapActivitesForScheduler = activities => {
-    return activities.map(activity => {
-        return {
-            Id: activity.id,
-            Subject: activity.title,
-            Description: activity.description,
-            Location: JSON.parse(localStorage.getItem('token')).city,
-            EventType: activity.status,
-            IsAllDay: false,
-            StartTime: new Date(activity.startDateAndTime),
-            EndTime: new Date(activity.endDateAndTime)
-        }
-    })
-}
-
 const mapStateToProps = state => ({
-    activities: mapActivitesForScheduler(state.calendar.activities),
+    activities: mapActivitesForScheduler(state.calendar.activities, state.user.city, state.adminReducer.hospitals),
     isFetching: state.calendar.isFetching,
-    isAdmin: state.user.isAdmin
+    isAdmin: state.user.isAdmin,
+    city: state.user.city,
+    hospitals: state.adminReducer.hospitals
 })
 
 const mapDispachToProps = dispatch => ({
+    getHospitals: city => dispatch(getHospitalsActionCreator(city)),
     loadActivities: () => dispatch(loadActivities()),
+    createActivity: activity => dispatch(createActivity(activity)),
     deleteActivity: id => dispatch(deleteActivity(id))
 })
 

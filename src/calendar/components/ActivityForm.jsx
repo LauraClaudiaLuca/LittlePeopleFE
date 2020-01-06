@@ -26,6 +26,9 @@ export default class ActivityForm extends React.Component {
                 <div></div>
             )
         }
+        let hospitals = this.props.hospitals.map(hospital => hospital.name)
+        console.log(this.props.city);
+        
         return (
             <table className="custom-event-editor" style={{ width: '100%', cellpadding: '5' }}>
             <tbody>
@@ -35,11 +38,18 @@ export default class ActivityForm extends React.Component {
                     </td>
                 </tr>
                 <tr>
-                    <td className="e-textlabel"><b>Status</b></td><td colSpan={4}>
-                        <DropDownListComponent id="EventType" placeholder='Choose status' data-name="EventType" 
-                            className="e-field" style={{ width: '100%' }} 
-                            dataSource={['In Progress', 'Pending', 'Accepted', 'Done', 'Rejected']} 
-                            value={this.getStatus(props.EventType) || null } />
+                    <td className="e-textlabel"> <b>Category</b></td><td colSpan={4}>
+                        <DropDownListComponent id="Category" placeholder='Choose a category' data-name="Category"
+                            className="e-field" style={{ width: '100%' }}
+                            value={props.category || 'Spitalizare'}
+                            dataSource={['Spitalizare', 'Imagine corporala si constiinta de sine', 'Joc cu tematica medicala', 'Managementul durerii', 'Stil de viata sanatos']} /></td>
+                </tr>
+                
+                <tr>
+                    <td className="e-textlabel"><b>Hospital</b></td><td colSpan={4}>
+                        <DropDownListComponent id="Location" placeholder='Choose status' data-name="Location"
+                            className="e-field" style={{ width: '100%' }}
+                            dataSource={hospitals} />
                     </td>
                 </tr>
                 <tr>
@@ -54,11 +64,7 @@ export default class ActivityForm extends React.Component {
                             value={new Date(props.endTime || props.EndTime)} className="e-field" />
                     </td>
                 </tr>
-                <tr>
-                    <td className="e-textlabel"><b>Location</b></td><td colSpan={4}>
-                        <input id="Location" className="e-field e-input" type="text" name="Location" style={{ width: '100%' }} />
-                    </td>
-                </tr>
+                
 
                 <tr>
                     <td className="e-textlabel"><b>Description</b></td><td colSpan={4}>
