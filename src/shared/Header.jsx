@@ -12,6 +12,7 @@ class Header extends React.Component {
             <React.Fragment>
                 <Nav className="mr-auto">
                     <NavLink className="header-link" to="/calendar" activeClassName="active-link"> Calendar </NavLink>
+                    <NavLink className="header-link" to="/proposals" activeClassName="active-link"> Proposals </NavLink>
                     <NavLink className="header-link" to="/news" activeClassName="active-link"> Reports </NavLink>
                     {this.props.user.isAdmin
                         ?
