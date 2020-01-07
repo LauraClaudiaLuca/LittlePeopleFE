@@ -1,8 +1,9 @@
 
 export const convertDateToString = date => {
-    date.setHours(date.getHours() + 2)
-    let index = date.toISOString().indexOf('.')
-    return date.toISOString().replace('T', ' ').slice(0, index)
+    var d = new Date(date.getTime());
+    d.setHours(d.getHours() + 2)
+    let index = d.toISOString().indexOf('.')
+    return d.toISOString().replace('T', ' ').slice(0, index)
 }
 
 export const mapActivityToSchedulerEvent = (activity, city, hospitals) => {

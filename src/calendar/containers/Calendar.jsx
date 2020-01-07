@@ -65,7 +65,6 @@ class Calendar extends React.Component {
                     readonly={readOnly}
                     selectedDate={Date.now()}
                     showQuickInfo={true}
-                    timezone={"Europe/Bucharest"}
                     editorTemplate={this.editorTemplate.bind(this)}
                     eventSettings={{ dataSource: this.props.activities, fields: this.fields }}
                     actionBegin={this.onActionBegin.bind(this)}>
