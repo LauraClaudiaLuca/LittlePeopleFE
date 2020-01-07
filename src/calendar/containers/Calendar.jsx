@@ -10,7 +10,7 @@ import { getHospitalsActionCreator } from '../../admin/actions/adminActionCreato
 
 class Calendar extends React.Component {
 
-    componentDidMount() {
+    UNSAFE_componentWillMount() {
         this.props.loadActivities()
         this.props.getHospitals(this.props.city)
     }
@@ -46,13 +46,6 @@ class Calendar extends React.Component {
             hospitals={this.props.hospitals} />
     }
 
-    // shouldComponentUpdate(nextProps) {
-    //     if (this.props.activities.length == nextProps.activities.length) { 
-    //         return false
-    //     } 
-    //     return true
-    // }
-
     render() {
         let { isAdmin } = this.props
         let readOnly = isAdmin ? false : true
@@ -66,7 +59,7 @@ class Calendar extends React.Component {
                     selectedDate={Date.now()}
                     showQuickInfo={true}
                     editorTemplate={this.editorTemplate.bind(this)}
-                    eventSettings={{ dataSource: this.props.activities, fields: this.fields }}
+                    eventSettings={{ dataSource: this.props.activities }}
                     actionBegin={this.onActionBegin.bind(this)}>
 
                     <ViewsDirective>
