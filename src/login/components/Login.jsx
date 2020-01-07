@@ -34,7 +34,7 @@ class Login extends React.Component {
     }
 
     redirectOnSucces = () => {
-        this.props.history.push("/")
+        this.props.history.push("/calendar")
     }
 
     render() {

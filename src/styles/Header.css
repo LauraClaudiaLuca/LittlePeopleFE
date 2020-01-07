@@ -11,7 +11,7 @@
 
 a.header-link {
     font-size: 1.2em;
-    padding: 0 20px;
+    margin: 0 20px;
     color: red;
 }
 
@@ -21,4 +21,9 @@ a.header-link:focus {
 
 a.header-link:hover {
     color: red;
+    text-decoration: none;
+}
+
+a.active-link {
+    border-bottom: 2px solid red;
 }

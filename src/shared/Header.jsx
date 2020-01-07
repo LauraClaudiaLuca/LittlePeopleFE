@@ -1,6 +1,6 @@
 import React from 'react'
 import { Navbar, Nav } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import { FaUser, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'
 import { connect } from 'react-redux'
 import { logoutUser } from '../login/actions/actionCreators'
@@ -11,26 +11,26 @@ class Header extends React.Component {
         return (
             <React.Fragment>
                 <Nav className="mr-auto">
-                    <Link className="header-link" to="/calendar"> Calendar </Link>
-                    <Link className="header-link" to="/news"> Reports </Link>
+                    <NavLink className="header-link" to="/calendar" activeClassName="active-link"> Calendar </NavLink>
+                    <NavLink className="header-link" to="/news" activeClassName="active-link"> Reports </NavLink>
                     {this.props.user.isAdmin
                         ?
-                        <Link className="header-link" to="/admin"> Volunteers </Link>
+                        <NavLink className="header-link" to="/admin" activeClassName="active-link"> Volunteers </NavLink>
                         :
                         null
                     }
                 </Nav>
 
                 <Navbar.Collapse className="justify-content-end">
-                    <Link className="header-link" to="/profile">
+                    <NavLink className="header-link" to="/profile" activeClassName="active-link">
                         {this.props.user.firstName}
                         <FaUser />
-                    </Link>
+                    </NavLink>
 
-                    <Link className="header-link" to="/" onClick={this.props.logout}>
+                    <NavLink className="header-link" to="/" onClick={this.props.logout}>
                         Logout
                         <FaSignOutAlt />
-                    </Link>
+                    </NavLink>
 
                 </Navbar.Collapse>
             </React.Fragment>
@@ -41,10 +41,10 @@ class Header extends React.Component {
     loginHeaderLink() {
         return (
             <Navbar.Collapse className="justify-content-end">
-                <Link className="header-link" to="/login">
+                <NavLink className="header-link" to="/login" activeClassName="active-link">
                     Login
                     <FaSignInAlt />
-                </Link>
+                </NavLink>
             </Navbar.Collapse>
         )
     }
@@ -58,9 +58,9 @@ class Header extends React.Component {
         return (
             <Navbar bg="light" sticky="top">
                 <Navbar.Brand>
-                    <Link to="/" id="logo" className="header-link">
+                    <NavLink to="/calendar" id="logo" className="header-link">
                         <img id="logo-image" src="images/little-people-header-img.png"></img>
-                    </Link>
+                    </NavLink>
                 </Navbar.Brand>
 
                 {links}
