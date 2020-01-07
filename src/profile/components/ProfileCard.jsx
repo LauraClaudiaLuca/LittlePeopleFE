@@ -54,11 +54,11 @@ class ProfileCard extends React.Component {
     undo = () => {
         var user = JSON.parse(localStorage.getItem('token'))
         this.setState({
-            username: user.username,
-            firstName: user.firstName,
-            surName: user.surname,
-            phone: user.phone,
-            city: user.city,
+            username: user.username=== null?"":user.username,
+            firstName: user.firstName===null?"":user.firstName,
+            surName: user.surname === null?"":user.surName,
+            phone: user.phone=== null?"":user.phone,
+            city: user.city=== null?"":user.city,
             email: user.email,
             notEditMode: true,
             invalidFirstName: undefined,

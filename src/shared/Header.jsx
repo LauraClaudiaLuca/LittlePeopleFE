@@ -23,7 +23,7 @@ class Header extends React.Component {
 
                 <Navbar.Collapse className="justify-content-end">
                     <Link className="header-link" to="/profile">
-                        {this.props.user.firstName}
+                        {this.props.user.firstName!==null?this.props.user.firstName:"Not specified"}
                         <FaUser />
                     </Link>
 
