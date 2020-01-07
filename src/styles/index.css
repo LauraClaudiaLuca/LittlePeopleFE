@@ -2,6 +2,7 @@
 @import "./Header.css";
 @import "./Home.css";
 @import "./Calendar.css";
+@import "./News.css";
 
 body {
   margin: 0;

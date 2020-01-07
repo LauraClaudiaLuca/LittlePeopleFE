@@ -40,7 +40,7 @@ class App extends Component {
         <Route exact path='/' component={Calendar} />
         <PrivateRoute path='/calendar' component={Calendar} authorized={isLoggedIn} redir="/login" />
         <PrivateRoute path='/news' component={News} authorized={isLoggedIn} redir="/login" />
-        <PrivateRoute path='/profile' component={Profile} authorized={isLoggedIn} redir="/login" />  
+        <PrivateRoute path='/profile' component={Profile} authorized={isLoggedIn} redir="/login" />
         <PrivateRoute path='/admin' component={AdminDashboard} authorized={isLoggedIn && user.isAdmin} redir="/login" />
         <Route component={PageNotFound} />
       </Switch>
