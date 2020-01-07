@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import { getUserData } from './shared/actions'
 import { loginSuccessAction } from './login/actions/actionCreators'
 import AdminDashboard from './admin/containers/AdminDashboard'
+import Proposals from './proposals/containers/Proposals';
 
 class App extends Component {
 
@@ -40,7 +41,8 @@ class App extends Component {
         <Route exact path='/' component={Calendar} />
         <PrivateRoute path='/calendar' component={Calendar} authorized={isLoggedIn} redir="/login" />
         <PrivateRoute path='/news' component={News} authorized={isLoggedIn} redir="/login" />
-        <PrivateRoute path='/profile' component={Profile} authorized={isLoggedIn} redir="/login" />  
+        <PrivateRoute path='/profile' component={Profile} authorized={isLoggedIn} redir="/login" />
+        <PrivateRoute path='/proposals' component={Proposals} authorized={isLoggedIn} redir="/login" />
         <PrivateRoute path='/admin' component={AdminDashboard} authorized={isLoggedIn && user.isAdmin} redir="/login" />
         <Route component={PageNotFound} />
       </Switch>
