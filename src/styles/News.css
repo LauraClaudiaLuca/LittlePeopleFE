@@ -10,6 +10,7 @@
 
 #modified-card-header {
   background-color: #D31122;
+  font-weight: bold;
 }
 
 #pagination {
@@ -20,8 +21,10 @@
   padding: 2px;
 }
 
-li {
+li:not(.report) {
   padding: 8px;
+  font-weight: bold;
+  color: #D31122;
 }
 
 li:hover:not(.current-page):not(.report) {
