@@ -3,8 +3,13 @@ import { connect } from 'react-redux'
 import WeekSideBar from '../components/WeekSideBar'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import ProposalsList from './ProposalList'
+import { loadProposals } from '../actions'
 
 class Proposals extends React.Component {
+
+    componentDidMount() {
+        this.props.loadProposals()
+    }
 
     render() {
         let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -20,7 +25,10 @@ class Proposals extends React.Component {
                     <Switch>
                         <Route 
                             exact path="/proposals/:day" 
-                            render={ props => <ProposalsList day={props.match.params.day} /> } />
+                            render={ props => 
+                                <ProposalsList 
+                                    day={props.match.params.day} 
+                                    proposals = {this.props.proposals} /> } />
                     </Switch>
                     
                 </div>
@@ -31,11 +39,11 @@ class Proposals extends React.Component {
 }
 
 const mapStateToProps = state => ({
-
+    proposals: state.proposalsReducer.proposals
 })
 
 const mapDispatchToProps = dispatch => ({
-
+    loadProposals: () => dispatch(loadProposals())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Proposals)

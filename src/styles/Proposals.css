@@ -17,5 +17,23 @@ li.week-day {
 ul.proposals-list {
     list-style: none;
     padding: 0;
+    display: grid;
+    grid-template-columns: auto auto;
+}
 
+.proposal {
+    padding: 10px;
+}
+
+.proposal-card-header {
+    background: red !important;
+    color: white;
+}
+
+a.card-link {
+    color: white;
+}
+
+a.card-link:hover {
+    color: thistle;
 }
