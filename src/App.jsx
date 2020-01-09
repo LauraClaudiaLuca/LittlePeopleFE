@@ -1,23 +1,23 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
-import PrivateRoute from './shared/PrivateRoute'
+import PrivateRoute from './shared/components/PrivateRoute'
 import Home from './home/containers/Home'
 import Login from './login/components/Login'
 import News from './news/containers/News'
 import Profile from './profile/containers/Profile'
 import Calendar from './calendar/containers/Calendar'
-import Header from './shared/Header'
-import Footer from './shared/Footer'
-import PageNotFound from './shared/PageNotFound'
+import Header from './shared/components/Header'
+import Footer from './shared/components/Footer'
+import PageNotFound from './shared/components/PageNotFound'
 import { connect } from 'react-redux'
 import { getUserData } from './shared/actions'
 import { loginSuccessAction } from './login/actions/actionCreators'
 import AdminDashboard from './admin/containers/AdminDashboard'
-import Proposals from './proposals/containers/Proposals';
+import Proposals from './proposals/containers/Proposals'
 
 class App extends Component {
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     let token = localStorage.getItem("token")
     if (token) {
       token = JSON.parse(token)
@@ -85,7 +85,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getUserData: token => dispatch(getUserData(token)),
-  markAsLoggedIn: firstName => dispatch(loginSuccessAction(firstName))
+  markAsLoggedIn: firstName => dispatch(loginSuccessAction(firstName, false))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)

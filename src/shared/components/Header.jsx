@@ -3,7 +3,7 @@ import { Navbar, Nav } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import { FaUser, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'
 import { connect } from 'react-redux'
-import { logoutUser } from '../login/actions/actionCreators'
+import { logoutUser } from '../../login/actions/actionCreators'
 
 class Header extends React.Component {
 

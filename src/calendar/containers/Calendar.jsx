@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { ScheduleComponent, Day, Week, TimelineViews, Month, 
-         ViewsDirective, ViewDirective, Inject, DragAndDrop } from '@syncfusion/ej2-react-schedule'
+         ViewsDirective, ViewDirective, Inject, DragAndDrop, Resize } from '@syncfusion/ej2-react-schedule'
 import { loadActivities, deleteActivity, createActivity, updateActivity } from '../actions'
 import { Container } from 'react-bootstrap'
 import ActivityForm from '../components/ActivityForm'
@@ -10,9 +10,9 @@ import { getHospitalsActionCreator } from '../../admin/actions/adminActionCreato
 
 class Calendar extends React.Component {
 
-    UNSAFE_componentWillMount() {
-        this.props.loadActivities()
+    componentDidMount() {
         this.props.getHospitals(this.props.city)
+        this.props.loadActivities()
     }
 
     createActivity(event) {
@@ -47,30 +47,36 @@ class Calendar extends React.Component {
     }
 
     render() {
-        let { isAdmin } = this.props
+        let { isAdmin, isFetching } = this.props
         let readOnly = isAdmin ? false : true
         return (
-            <Container>
-                <ScheduleComponent
-                    width='100%'
-                    height='100%'
-                    startHour={"07:00"}
-                    readonly={readOnly}
-                    selectedDate={Date.now()}
-                    showQuickInfo={true}
-                    editorTemplate={this.editorTemplate.bind(this)}
-                    eventSettings={{ dataSource: this.props.activities }}
-                    actionBegin={this.onActionBegin.bind(this)}>
+            <React.Fragment>
+                { isFetching &&
+                    <h1> Loading..</h1>
+                }
+                <Container>
+                    <ScheduleComponent
+                        width='100%'
+                        height='100%'
+                        startHour={"07:00"}
+                        readonly={readOnly}
+                        selectedDate={Date.now()}
+                        showQuickInfo={true}
+                        editorTemplate={this.editorTemplate.bind(this)}
+                        eventSettings={{ dataSource: this.props.activities }}
+                        actionBegin={this.onActionBegin.bind(this)}>
 
-                    <ViewsDirective>
-                        <ViewDirective option='Day' />
-                        <ViewDirective option='Week' />
-                        <ViewDirective option='TimelineWeek' />
-                        <ViewDirective option='Month' />
-                    </ViewsDirective>
-                    <Inject services={[Day, Week, TimelineViews, Month, DragAndDrop]} />
-                </ScheduleComponent>
-            </Container>
+                        <ViewsDirective>
+                            <ViewDirective option='Day' />
+                            <ViewDirective option='Week' />
+                            <ViewDirective option='TimelineWeek' />
+                            <ViewDirective option='Month' />
+                        </ViewsDirective>
+                        <Inject services={[Day, Week, TimelineViews, Month, DragAndDrop, Resize]} />
+                    </ScheduleComponent>
+                </Container>
+            </React.Fragment>
+           
         )
     }
 }

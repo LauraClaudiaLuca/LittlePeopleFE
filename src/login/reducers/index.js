@@ -38,6 +38,7 @@ const authReducer = (state = initialState, action) => {
                 message: ''
             }
         case LOGOUT_SUCCESS: 
+            localStorage.clear()
             return {
                 isLoggedIn: false,
                 loginError: false,

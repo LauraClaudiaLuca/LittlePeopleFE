@@ -52,6 +52,12 @@ export const loadActivities = dispatch => {
 }
 
 const deleteActivitySuccess = activityId => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully updated activity!',
+        timer: 1500,
+        showConfirmButton: false
+    })
     return {
         type: DELETE_ACTIVITY_SUCCESS,
         activityId
@@ -80,6 +86,12 @@ export const deleteActivity = (activityId, dispatch) => {
 }
 
 const createActivitySuccess = activity => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully updated activity!',
+        timer: 1500,
+        showConfirmButton: false
+    })
     return {
         type: CREATE_ACTIVITY_SUCCESS,
         activity
@@ -109,6 +121,12 @@ export const createActivity = (activity, dispatch) => {
 }
 
 const updateActivitySuccess = activity => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully updated activity!',
+        timer: 1500,
+        showConfirmButton: false
+    })
     return {
         type: UPDATE_ACTIVITY_SUCCEESS,
         activity
