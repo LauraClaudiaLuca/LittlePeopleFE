@@ -1,0 +1,21 @@
+.proposals-wrapper {
+    display: grid;
+    grid-template-columns: 200px auto;
+}
+
+ul.week-days {
+    position: fixed;
+    list-style: none;
+    padding-left: 15px;
+}
+
+li.week-day {
+    padding: 2px;
+    margin: 8px;
+}
+
+ul.proposals-list {
+    list-style: none;
+    padding: 0;
+
+}

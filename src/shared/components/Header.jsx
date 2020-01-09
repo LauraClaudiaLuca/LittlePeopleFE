@@ -8,11 +8,14 @@ import { logoutUser } from '../../login/actions/actionCreators'
 class Header extends React.Component {
 
     loggedInHeaderLinks() {
+        let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        let currentDate = new Date()
+        let currentDay = days[currentDate.getDay()]
         return (
             <React.Fragment>
                 <Nav className="mr-auto">
                     <NavLink className="header-link" to="/calendar" activeClassName="active-link"> Calendar </NavLink>
-                    <NavLink className="header-link" to="/proposals" activeClassName="active-link"> Proposals </NavLink>
+                    <NavLink className="header-link" to={`/proposals/${currentDay}`} activeClassName="active-link"> Proposals </NavLink>
                     <NavLink className="header-link" to="/news" activeClassName="active-link"> Reports </NavLink>
                     {this.props.user.isAdmin
                         ?

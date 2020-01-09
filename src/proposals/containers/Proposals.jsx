@@ -1,14 +1,31 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import WeekSideBar from '../components/WeekSideBar'
+import { BrowserRouter, Switch, Route } from 'react-router-dom'
+import ProposalsList from './ProposalList'
 
 class Proposals extends React.Component {
 
     render() {
+        let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        let currentDate = new Date()
+        let currentDay = days[currentDate.getDay()]
+        console.log(currentDay);
+        
         return (
-            <React.Fragment>
-                <h3> Proposals Page: A table with proposal for each day of the current week </h3>
-                <h5> Users can create a proposal for a day or vote an existing one</h5>
-            </React.Fragment>
+            <BrowserRouter>
+                <div className="proposals-wrapper">
+                    <WeekSideBar />
+
+                    <Switch>
+                        <Route 
+                            exact path="/proposals/:day" 
+                            render={ props => <ProposalsList day={props.match.params.day} /> } />
+                    </Switch>
+                    
+                </div>
+            </BrowserRouter>
+            
         )
     }
 }

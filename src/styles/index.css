@@ -3,6 +3,7 @@
 @import "./Home.css";
 @import "./Calendar.css";
 @import "./News.css";
+@import "./Proposals.css";
 
 body {
   margin: 0;
