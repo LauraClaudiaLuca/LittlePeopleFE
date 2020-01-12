@@ -3,7 +3,7 @@ import ProposalModal from '../components/ProposalModal'
 import { Card, Row, Col } from 'react-bootstrap'
 import { FaEdit, FaTrash, FaThumbsUp, FaCheck, FaFileAlt, FaMapMarker, FaClock, FaUser, FaTags } from 'react-icons/fa'
 import { connect } from 'react-redux'
-import  { deleteProposal, updateProposal, voteProposal, loadProposals } from '../actions'
+import  { deleteProposal, updateProposal, voteProposal, loadProposals, unlikeProposal } from '../actions'
 import { convertDateToString } from '../../shared/helpers'
 
 class Proposal extends React.Component {
@@ -39,6 +39,13 @@ class Proposal extends React.Component {
         }, 1000)
     }
 
+    unlikeProposal() {
+        this.props.unlikeProposal(this.props.proposal.id)
+        setTimeout(() => {
+            this.props.loadProposals()
+        }, 1000)
+    }
+
     acceptProposal() {
 
     }
@@ -46,7 +53,7 @@ class Proposal extends React.Component {
     getLikeButton(liked) {
         if (liked) {
             return (
-               <FaThumbsUp style={{marginLeft: " 20px", color: "yellow"}}/>
+                <Card.Link href="#" onClick={() => this.unlikeProposal()}><FaThumbsUp style={{ color: "yellow" }} /> </Card.Link>
             )
         }
         return (
@@ -132,6 +139,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     loadProposals: () => dispatch(loadProposals()),
     likeProposal: proposalId => dispatch(voteProposal(proposalId)),
+    unlikeProposal: proposalId => dispatch(unlikeProposal(proposalId)),
     updateProposal: proposal => dispatch(updateProposal(proposal)),
     deleteProposal: proposalId => dispatch(deleteProposal(proposalId))
 })

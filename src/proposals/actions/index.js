@@ -21,6 +21,10 @@ export const VOTE_PROPOSAL = 'VOTE_PROPOSAL'
 export const VOTE_PROPOSAL_SUCCESS = 'VOTE_PROPOSAL_SUCCESS'
 export const VOTE_PROPOSAL_FAILURE = 'VOTE_PROPOSAL_FAILURE'
 
+export const UNLIKE_PROPOSAL = 'UNLIKE_PROPOSAL'
+export const UNLIKE_PROPOSAL_SUCCESS = 'UNLIKE_PROPOSAL_SUCCESS'
+export const UNLIKE_PROPOSAL_FAILURE = 'UNLIKE_PROPOSAL_FAILURE'
+
 
 const loadProposalsSuccess = proposals => {
     return {
@@ -190,7 +194,42 @@ const voteProposalFailure = () => {
 export const voteProposal = (proposalId, dispatch) => {
     return dispatch => {
         return axiosInstance.post(`http://localhost:8080/api/vote/addVote?proposalId=${proposalId}`)
-            .then(res => dispatch(voteProposalSuccess()))
+            .then(() => dispatch(voteProposalSuccess()))
             .catch(() => dispatch(voteProposalFailure()))
+    }
+}
+
+
+const unlikeProposalSuccess = () => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully unliked proposal!',
+        timer: 1500,
+        showConfirmButton: false
+    })
+    return {
+        type: UNLIKE_PROPOSAL_SUCCESS,
+    }
+}
+
+
+const unlikeProposalFailure = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Could not unlike the proposal!',
+        confirmButtonColor: '#db3d44',
+        confirmButtonText: 'OK'
+    })
+    return {
+        type: UNLIKE_PROPOSAL_FAILURE
+    }
+}
+
+export const unlikeProposal = (proposalId, dispatch) => {
+    return dispatch => {
+        return axiosInstance.post(`http://localhost:8080/api/vote/removeVote?proposalId=${proposalId}`)
+            .then(() => dispatch(unlikeProposalSuccess()))
+            .catch(() => dispatch(unlikeProposalFailure()))
     }
 }
