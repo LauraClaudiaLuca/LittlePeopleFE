@@ -52,6 +52,12 @@ export const loadActivities = dispatch => {
 }
 
 const deleteActivitySuccess = activityId => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully deleted activity!',
+        timer: 1500,
+        showConfirmButton: false
+    })
     return {
         type: DELETE_ACTIVITY_SUCCESS,
         activityId
@@ -80,6 +86,12 @@ export const deleteActivity = (activityId, dispatch) => {
 }
 
 const createActivitySuccess = activity => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully created activity!',
+        timer: 1500,
+        showConfirmButton: false
+    })
     return {
         type: CREATE_ACTIVITY_SUCCESS,
         activity
@@ -109,6 +121,12 @@ export const createActivity = (activity, dispatch) => {
 }
 
 const updateActivitySuccess = activity => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully updated activity!',
+        timer: 1500,
+        showConfirmButton: false
+    })
     return {
         type: UPDATE_ACTIVITY_SUCCEESS,
         activity
@@ -129,7 +147,6 @@ const updateActivityFailure = () => {
 }
 
 export const updateActivity = (activity, dispatch) => {
-    console.log(activity)
     return dispatch => {
         return axiosInstance.post('http://localhost:8080/api/activity/leader/update', activity)
             .then(res => dispatch(updateActivitySuccess(res.data)))

@@ -3,16 +3,19 @@ import { Navbar, Nav } from 'react-bootstrap'
 import { NavLink } from 'react-router-dom'
 import { FaUser, FaSignInAlt, FaSignOutAlt } from 'react-icons/fa'
 import { connect } from 'react-redux'
-import { logoutUser } from '../login/actions/actionCreators'
+import { logoutUser } from '../../login/actions/actionCreators'
 
 class Header extends React.Component {
 
     loggedInHeaderLinks() {
+        let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+        let currentDate = new Date()
+        let currentDay = days[currentDate.getDay()]
         return (
             <React.Fragment>
                 <Nav className="mr-auto">
                     <NavLink className="header-link" to="/calendar" activeClassName="active-link"> Calendar </NavLink>
-                    <NavLink className="header-link" to="/proposals" activeClassName="active-link"> Proposals </NavLink>
+                    <NavLink className="header-link" to={`/proposals/${currentDay}`} activeClassName="active-link"> Proposals </NavLink>
                     <NavLink className="header-link" to="/news" activeClassName="active-link"> Reports </NavLink>
                     {this.props.user.isAdmin
                         ?
@@ -56,11 +59,12 @@ class Header extends React.Component {
         if (isLoggedIn) {
             links = this.loggedInHeaderLinks()
         }
+        let logoLink = isLoggedIn ? "/calendar" : "/"
         return (
             <Navbar bg="light" sticky="top">
                 <Navbar.Brand>
-                    <NavLink to="/calendar" id="logo" className="header-link">
-                        <img id="logo-image" src="images/little-people-header-img.png"></img>
+                    <NavLink to={logoLink} id="logo" className="header-link">
+                        <img id="logo-image" alt="Little People" src="images/little-people-header-img.png"></img>
                     </NavLink>
                 </Navbar.Brand>
 

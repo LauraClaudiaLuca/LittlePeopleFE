@@ -13,6 +13,7 @@ a.header-link {
     font-size: 1.2em;
     margin: 0 20px;
     color: red;
+    font-weight: bold;
 }
 
 a.header-link:focus {

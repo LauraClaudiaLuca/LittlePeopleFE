@@ -23,10 +23,18 @@ export const loginFailureAction = () => {
     }
 }
 
-export const loginSuccessAction = email => {
+export const loginSuccessAction = (name, fireAlert = true) => {
+    if (fireAlert) {
+        Swal.fire({
+            icon: 'success',
+            title: `Welcome ${name}`,
+            showConfirmButton: false,
+            timer: 4000
+        })
+    }
     return {
         type: LOGIN_SUCCESS,
-        message: `Welcome ${email}!`
+        message: `Welcome ${name}!`
     }
 }
 
@@ -42,7 +50,7 @@ export const loginActionCreator = (email, password, redirectOnSuccess) => {
             .then(res => {
                 const token = res.data
                 localStorage.setItem('token', JSON.stringify(token))
-                dispatch(loginSuccessAction(email))
+                dispatch(loginSuccessAction(token.firstName))
                 redirectOnSuccess()
             })
             .catch((err) => dispatch(loginFailureAction()))
@@ -50,6 +58,12 @@ export const loginActionCreator = (email, password, redirectOnSuccess) => {
 }
 
 export const logoutRequest = () => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Logged out successfully!',
+        showConfirmButton: false,
+        timer: 4000
+    })
     return {
         type: LOGOUT_REQUEST
     }
@@ -83,17 +97,16 @@ export const logoutUser = () => {
             authorization: token.userToken
         }
     }
-    return dispatch => {
+    return async (dispatch) => {
         dispatch(logoutRequest())
-        return axios.post('http://localhost:8080/api/user/logout',
-           data,
-           config
-        )
-        .then(() => {
+        try {
+           await axios.post('http://localhost:8080/api/user/logout',
+                data,
+                config
+            )
             dispatch(logoutSuccess())
-        })
-        .catch(() => {
+        } catch (err) {
             dispatch(logoutFailure())
-        })  
+        }
     }
 }

@@ -1,5 +1,8 @@
 
 export const convertDateToString = date => {
+    if (typeof date === 'string') {
+        date = new Date(date)
+    }
     var d = new Date(date.getTime());
     d.setHours(d.getHours() + 2)
     let index = d.toISOString().indexOf('.')

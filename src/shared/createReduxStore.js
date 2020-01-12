@@ -6,6 +6,7 @@ import profileReducer from "../profile/reducers/profileReducer"
 import userDataReducer from './reducers'
 import adminReducer from '../admin/reducers/adminReducer'
 import calendarReducer from '../calendar/reducers'
+import proposalsReducer from '../proposals/reducers'
 
 export const createReduxStore = () => {
     let middlewares = [thunk]
@@ -22,7 +23,8 @@ export const createReduxStore = () => {
         auth : authReducer,
         profileReducer: profileReducer,
         adminReducer : adminReducer,
-        calendar: calendarReducer
+        calendar: calendarReducer,
+        proposalsReducer: proposalsReducer
     })
 
     
