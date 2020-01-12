@@ -22,10 +22,7 @@ class Proposal extends React.Component {
     }
 
     deleteProposal() {
-        let { isAdmin, username, proposal } = this.props
-        if (isAdmin || username === proposal.proposedBy) {
-            this.props.deleteProposal(proposal.id)
-        }
+        this.props.deleteProposal(this.props.proposal.id)
     }
 
     updateProposal(proposal) {
@@ -66,13 +63,17 @@ class Proposal extends React.Component {
     }
 
     render() {
-        let { proposal, isAdmin, hospitals, userId } = this.props
+        let { proposal, isAdmin, hospitals, userId, userName } = this.props
+        let canEditOrDelete = isAdmin || userName === proposal.proposedBy
+
         let start = new Date(proposal.startDateAndTime)
         let end = new Date(proposal.endDateAndTime)
+
         let likesCnt = proposal.userIdsWhoVotedThisProposal.length
         let liked = proposal.userIdsWhoVotedThisProposal.filter(id => id == userId).length > 0
         let likeButton = this.getLikeButton(liked)
         let likes = likesCnt === 1 ? "1 like" : `${likesCnt} likes`
+
         return (
             <div className="proposal">
                 <ProposalModal
@@ -90,13 +91,10 @@ class Proposal extends React.Component {
                             </Col>
 
                             <Col md={4} xs={4} lg={4} style={{textAlign: 'right'}}>
-                                <Card.Link href="#" onClick={() => this.toggleModal() }> <FaEdit /> </Card.Link>
-                                <Card.Link href="#" onClick={() => this.deleteProposal()}> <FaTrash /> </Card.Link>
-                                {isAdmin &&
-                                    <Card.Link href="#" onClick={() => this.acceptProposal()}> <FaCheck /> </Card.Link>
-                                }
+                                { canEditOrDelete && <Card.Link href="#" onClick={() => this.toggleModal() }> <FaEdit /> </Card.Link> }
+                                { canEditOrDelete && <Card.Link href="#" onClick={() => this.deleteProposal()}> <FaTrash /> </Card.Link> }
+                                { isAdmin && <Card.Link href="#" onClick={() => this.acceptProposal()}> <FaCheck /> </Card.Link> }
                                 { likeButton }
-                                
                             </Col>
                         </Row>
                     </Card.Header>

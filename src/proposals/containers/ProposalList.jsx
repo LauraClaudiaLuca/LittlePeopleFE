@@ -55,7 +55,7 @@ class ProposalsList extends React.Component {
         return (
             <Container fluid>
                 <Card style={{marginTop: "10px"}}>
-                    <Card.Header> 
+                    <Card.Header id="proposal-list-header"> 
                         <Row>
                             <Col md={10} lg={10} xs={10}> <h2> Proposals for {date} </h2>  </Col>
                             <Col style={{float: "right"}}>
