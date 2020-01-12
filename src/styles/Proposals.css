@@ -35,7 +35,7 @@ a.card-link {
 }
 
 a.card-link:hover {
-    color:  yellow;
+    color:  goldenrod;
 }
 #add-proposal {
     background: red !important;
@@ -48,4 +48,18 @@ a.card-link:hover {
 .proposal-submit {
     display: flex;
     justify-content: center;
+}
+
+.proposal-details {
+    display: grid;
+    grid-template-columns: 30px auto;
+}
+
+.proposal-icon {
+    margin-top: 3px;
+    color: red;
+}
+
+.card-subtitle {
+    margin: 0 !important;
 }

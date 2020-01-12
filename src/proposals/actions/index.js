@@ -17,6 +17,10 @@ export const UPDATE_PROPOSAL = 'UPDATE_PROPOSAL'
 export const UPDATE_PROPOSAL_SUCCESS = 'UPDATE_PROPOSAL_SUCCESS'
 export const UPDATE_PROPOSAL_FAILURE = 'UPDATE_PROPOSAL_FAILURE'
 
+export const VOTE_PROPOSAL = 'VOTE_PROPOSAL'
+export const VOTE_PROPOSAL_SUCCESS = 'VOTE_PROPOSAL_SUCCESS'
+export const VOTE_PROPOSAL_FAILURE = 'VOTE_PROPOSAL_FAILURE'
+
 
 const loadProposalsSuccess = proposals => {
     return {
@@ -153,5 +157,40 @@ export const updateProposal = (proposal, dispatch) => {
         return axiosInstance.post('http://localhost:8080/api/proposal/update', proposal)
             .then(res => dispatch(updateProposalSuccess(res.data)))
             .catch(() => dispatch(updateProposalFailure()))
+    }
+}
+
+
+const voteProposalSuccess = () => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully voted proposal!',
+        timer: 1500,
+        showConfirmButton: false
+    })
+    return {
+        type: VOTE_PROPOSAL_SUCCESS,
+    }
+}
+
+
+const voteProposalFailure = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Could not vote the proposal!',
+        confirmButtonColor: '#db3d44',
+        confirmButtonText: 'OK'
+    })
+    return {
+        type: VOTE_PROPOSAL_FAILURE
+    }
+}
+
+export const voteProposal = (proposalId, dispatch) => {
+    return dispatch => {
+        return axiosInstance.post(`http://localhost:8080/api/vote/addVote?proposalId=${proposalId}`)
+            .then(res => dispatch(voteProposalSuccess()))
+            .catch(() => dispatch(voteProposalFailure()))
     }
 }
