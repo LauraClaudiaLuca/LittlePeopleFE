@@ -33,7 +33,6 @@ export default class ProposalForm extends React.Component {
     }
 
     onChange = (event) => {
-        console.log(event)
         const { value, name } = event.target
         const proposal = this.state.proposal
         
