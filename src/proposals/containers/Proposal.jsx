@@ -3,7 +3,7 @@ import ProposalModal from '../components/ProposalModal'
 import { Card, Row, Col } from 'react-bootstrap'
 import { FaEdit, FaTrash, FaThumbsUp, FaCheck, FaFileAlt, FaMapMarker, FaClock, FaUser, FaTags } from 'react-icons/fa'
 import { connect } from 'react-redux'
-import  { deleteProposal, updateProposal, voteProposal, loadProposals, unlikeProposal } from '../actions'
+import { deleteProposal, updateProposal, voteProposal, loadProposals, unlikeProposal, acceptProposal } from '../actions'
 import { convertDateToString } from '../../shared/helpers'
 
 class Proposal extends React.Component {
@@ -22,7 +22,10 @@ class Proposal extends React.Component {
     }
 
     deleteProposal() {
-        this.props.deleteProposal(this.props.proposal.id)
+        let { isAdmin, username, proposal } = this.props
+        if (isAdmin || username === proposal.proposedBy) {
+            this.props.deleteProposal(proposal.id)
+        }
     }
 
     updateProposal(proposal) {
@@ -47,7 +50,8 @@ class Proposal extends React.Component {
     }
 
     acceptProposal() {
-
+        this.props.acceptProposal(this.props.proposal.id)
+        this.props.deleteProposal(this.props.proposal.id, false)
     }
 
     getLikeButton(liked) {
@@ -131,17 +135,19 @@ class Proposal extends React.Component {
     }
 }
 
-
 const mapStateToProps = state => ({
-    userId: state.user.userId
+    userId: state.user.userId,
+    userName: state.user.username,
+    isAdmin: state.user.isAdmin
 })
 
 const mapDispatchToProps = dispatch => ({
     loadProposals: () => dispatch(loadProposals()),
     likeProposal: proposalId => dispatch(voteProposal(proposalId)),
     unlikeProposal: proposalId => dispatch(unlikeProposal(proposalId)),
+    acceptProposal: proposalId => dispatch(acceptProposal(proposalId)),
     updateProposal: proposal => dispatch(updateProposal(proposal)),
-    deleteProposal: proposalId => dispatch(deleteProposal(proposalId))
+    deleteProposal: (proposalId, showMessage) => dispatch(deleteProposal(proposalId, showMessage))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Proposal)

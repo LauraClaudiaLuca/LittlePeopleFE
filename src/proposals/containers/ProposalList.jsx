@@ -81,8 +81,7 @@ class ProposalsList extends React.Component {
                                 <Proposal
                                     key={proposal.id}
                                     proposal={proposal}
-                                    hospitals={hospitals}
-                                    isAdmin={this.props.isAdmin} />
+                                    hospitals={hospitals} />
                             )}
                         </ul>
                     </Card.Body>

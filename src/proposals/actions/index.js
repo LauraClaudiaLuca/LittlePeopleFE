@@ -25,6 +25,9 @@ export const UNLIKE_PROPOSAL = 'UNLIKE_PROPOSAL'
 export const UNLIKE_PROPOSAL_SUCCESS = 'UNLIKE_PROPOSAL_SUCCESS'
 export const UNLIKE_PROPOSAL_FAILURE = 'UNLIKE_PROPOSAL_FAILURE'
 
+export const ACCEPT_PROPOSAL = 'ACCEPT_PROPOSAL'
+export const ACCEPT_PROPOSAL_SUCCESS = 'ACCEPT_PROPOSAL_SUCCESS'
+export const ACCEPT_PROPOSAL_FAILURE = 'ACCEPT_PROPOSAL_FAILURE'
 
 const loadProposalsSuccess = proposals => {
     return {
@@ -61,13 +64,15 @@ export const loadProposals = dispatch => {
     }
 }
 
-const deleteProposalSuccess = proposalId => {
-    Swal.fire({
-        icon: 'success',
-        title: 'Successfully deleted proposal!',
-        timer: 1500,
-        showConfirmButton: false
-    })
+const deleteProposalSuccess = (proposalId, showMessage=true) => {
+    if (showMessage) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Successfully deleted proposal!',
+            timer: 1500,
+            showConfirmButton: false
+        })
+    }   
     return {
         type: DELETE_PROPOSAL_SUCCESS,
         proposalId
@@ -87,10 +92,10 @@ const deleteProposalFailure = () => {
     }
 }
 
-export const deleteProposal = (proposalId, dispatch) => {
+export const deleteProposal = (proposalId, showMessage, dispatch) => {
     return dispatch => {
         return axiosInstance.post(`http://localhost:8080/api/proposal/delete?proposalId=${proposalId}`)
-            .then(() => dispatch(deleteProposalSuccess(proposalId)))
+            .then(() => dispatch(deleteProposalSuccess(proposalId, showMessage)))
             .catch(() => dispatch(deleteProposalFailure()))
     }
 }
@@ -231,5 +236,40 @@ export const unlikeProposal = (proposalId, dispatch) => {
         return axiosInstance.post(`http://localhost:8080/api/vote/removeVote?proposalId=${proposalId}`)
             .then(() => dispatch(unlikeProposalSuccess()))
             .catch(() => dispatch(unlikeProposalFailure()))
+    }
+}
+
+
+const acceptProposalSuccess = () => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully accepted proposal!',
+        timer: 1500,
+        showConfirmButton: false
+    })
+    return {
+        type: UNLIKE_PROPOSAL_SUCCESS,
+    }
+}
+
+
+const acceptProposalFailure = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Could not accept the proposal!',
+        confirmButtonColor: '#db3d44',
+        confirmButtonText: 'OK'
+    })
+    return {
+        type: UNLIKE_PROPOSAL_FAILURE
+    }
+}
+
+export const acceptProposal = (proposalId, dispatch) => {
+    return dispatch => {
+        return axiosInstance.post(`http://localhost:8080/api/proposal/leader/acceptProposal?proposalId=${proposalId}`)
+            .then(() => dispatch(acceptProposalSuccess()))
+            .catch(() => dispatch(acceptProposalFailure()))
     }
 }
