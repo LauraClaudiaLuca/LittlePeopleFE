@@ -18,7 +18,7 @@ ul.proposals-list {
     list-style: none;
     padding: 0;
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 50% 50%;
 }
 
 .proposal {
@@ -35,5 +35,17 @@ a.card-link {
 }
 
 a.card-link:hover {
-    color: thistle;
+    color:  yellow;
+}
+#add-proposal {
+    background: red !important;
+}
+
+#add-proposal:hover {
+    background: #E3165B !important;
+}
+
+.proposal-submit {
+    display: flex;
+    justify-content: center;
 }

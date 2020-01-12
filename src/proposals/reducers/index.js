@@ -11,7 +11,7 @@ const initialState = {
 const proposalsReducer = (state = initialState, action) => {
     let index, proposals
     switch (action.type) {
-        case LOAD_PROPOSALS:
+        case LOAD_PROPOSALS || CREATE_PROPOSAL || DELETE_PROPOSAL || UPDATE_PROPOSAL:
             return {
                 ...state,
                 isFetching: true

@@ -1,8 +1,13 @@
 import React from 'react'
 import Proposal from './Proposal'
-import { Container } from 'react-bootstrap'
+import { Container, Card, Row, Col, Button } from 'react-bootstrap'
+import { FaPlus } from 'react-icons/fa'
+import ProposalModal from '../components/ProposalModal'
+import { connect } from 'react-redux'
+import { createProposal } from '../actions'
+import { convertDateToString } from '../../shared/helpers'
 
-export default class ProposalsList extends React.Component {
+class ProposalsList extends React.Component {
     constructor(props) {
         super(props)
         this.days = {
@@ -14,7 +19,18 @@ export default class ProposalsList extends React.Component {
             'Friday': 5,
             'Saturday': 6
         }
+        this.state = {
+            showModal: false
+        }
+        this.createProposal = this.createProposal.bind(this)
     }
+
+    toggleModal() {
+        this.setState({
+            showModal: !this.state.showModal
+        })
+    }
+
 
     filterProposals() {
         let { day, proposals } = this.props
@@ -24,17 +40,63 @@ export default class ProposalsList extends React.Component {
         })
     }
 
+    createProposal(proposal) {
+        proposal.startDateAndTime = convertDateToString(proposal.startDateAndTime)
+        proposal.endDateAndTime = convertDateToString(proposal.endDateAndTime)
+        this.props.createProposal(proposal)
+        this.toggleModal()
+    }
+
     render() {
         let proposals = this.filterProposals()
+        let { hospitals } = this.props
+        let date = this.props.day
         return (
             <Container fluid>
-                <ul className="proposals-list">
-                    { proposals.map(proposal => 
-                        <Proposal key={proposal.id} proposal={proposal} />
-                    )}
-                </ul>
+                <Card style={{marginTop: "10px"}}>
+                    <Card.Header> 
+                        <Row>
+                            <Col md={10} lg={10} xs={10}> <h2> Proposals for {date} </h2>  </Col>
+                            <Col style={{float: "right"}}>
+                                <Button 
+                                id="add-proposal"
+                                onClick={() => this.toggleModal()}>
+                                    Propose an activity <FaPlus /> 
+                                </Button>
+                            </Col>
+                        </Row>
+                        
+                    </Card.Header>
+                    <Card.Body>
+
+                        <ProposalModal
+                            show={this.state.showModal}
+                            submit={this.createProposal}
+                            hospitals={hospitals}
+                            toggle={() => this.toggleModal()} />
+
+                        <ul className="proposals-list">
+                            {proposals.map(proposal =>
+                                <Proposal
+                                    key={proposal.id}
+                                    proposal={proposal}
+                                    hospitals={hospitals}
+                                    isAdmin={this.props.isAdmin} />
+                            )}
+                        </ul>
+                    </Card.Body>
+                </Card>
+                
+                
             </Container>
         )
         
     }
 }
+
+const mapDispatchToProps = dispatch => ({
+    createProposal: proposal => dispatch(createProposal(proposal))
+})
+
+
+export default connect(null, mapDispatchToProps)(ProposalsList)

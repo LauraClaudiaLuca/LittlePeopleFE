@@ -52,3 +52,106 @@ export const loadProposals = dispatch => {
             .catch(() => dispatch(loadProposalsFailure()))
     }
 }
+
+const deleteProposalSuccess = proposalId => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully deleted proposal!',
+        timer: 1500,
+        showConfirmButton: false
+    })
+    return {
+        type: DELETE_PROPOSAL_SUCCESS,
+        proposalId
+    }
+}
+
+const deleteProposalFailure = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Could not delete proposal!',
+        confirmButtonColor: '#db3d44',
+        confirmButtonText: 'OK'
+    })
+    return {
+        type: DELETE_PROPOSAL_FAILURE
+    }
+}
+
+export const deleteProposal = (proposalId, dispatch) => {
+    return dispatch => {
+        return axiosInstance.post(`http://localhost:8080/api/proposal/delete?proposalId=${proposalId}`)
+            .then(() => dispatch(deleteProposalSuccess(proposalId)))
+            .catch(() => dispatch(deleteProposalFailure()))
+    }
+}
+
+const createProposalSuccess = proposal => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully created proposal!',
+        timer: 1500,
+        showConfirmButton: false
+    })
+    return {
+        type: CREATE_PROPOSAL_SUCCESS,
+        proposal
+    }
+}
+
+const createProposalFailure = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Could not create proposal!',
+        confirmButtonColor: '#db3d44',
+        confirmButtonText: 'OK'
+    })
+    return {
+        type: CREATE_PROPOSAL_FAILURE
+    }
+}
+
+export const createProposal = (proposal, dispatch) => {
+    return dispatch => {
+        delete proposal.id
+        return axiosInstance.post('http://localhost:8080/api/proposal/add', proposal)
+            .then(res => dispatch(createProposalSuccess(res.data)))
+            .catch(() => dispatch(createProposalFailure()))
+    }
+}
+
+const updateProposalSuccess = proposal => {
+    Swal.fire({
+        icon: 'success',
+        title: 'Successfully updated proposal!',
+        timer: 1500,
+        showConfirmButton: false
+    })
+    return {
+        type: UPDATE_PROPOSAL_SUCCESS,
+        proposal
+    }
+}
+
+const updateProposalFailure = () => {
+    Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Could not update the proposal!',
+        confirmButtonColor: '#db3d44',
+        confirmButtonText: 'OK'
+    })
+    return {
+        type: UPDATE_PROPOSAL_FAILURE
+    }
+}
+
+export const updateProposal = (proposal, dispatch) => {
+    return dispatch => {
+        return axiosInstance.post('http://localhost:8080/api/proposal/update', proposal)
+            .then(res => dispatch(updateProposalSuccess(res.data)))
+            .catch(() => dispatch(updateProposalFailure()))
+    }
+}

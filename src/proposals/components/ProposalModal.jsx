@@ -1,23 +1,28 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap'
-import ActivityForm from '../../calendar/components/ActivityForm'
 import ProposalForm from './ProposalForm'
 
 export default class ProposalModal extends React.Component {
 
     render() {
-        let { show, proposal, toggle } = this.props
+        let { show, proposal, hospitals, toggle } = this.props
+        let title = 'New Proposal'
+        if (proposal) {
+            title = proposal.title || 'New Proposal'
+        }
+
         return (
             <Modal 
                 show={show}
                 onHide={() => toggle()}>
                 <Modal.Header closeButton>
-                    <Modal.Title>{proposal.title}</Modal.Title>
+                    <Modal.Title>{title}</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <ProposalForm 
+                        submit={this.props.submit}
                         proposal={proposal}
-                        hospitals={[]}/>
+                        hospitals={hospitals}/>
                 </Modal.Body>
             </Modal>
 

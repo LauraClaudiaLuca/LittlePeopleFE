@@ -4,19 +4,18 @@ import WeekSideBar from '../components/WeekSideBar'
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 import ProposalsList from './ProposalList'
 import { loadProposals } from '../actions'
+import { getHospitalsActionCreator } from '../../admin/actions/adminActionCreator'
 
 class Proposals extends React.Component {
 
     componentDidMount() {
         this.props.loadProposals()
+        let token = JSON.parse(localStorage.getItem('token'))
+        this.props.getHospitals(token.city)
     }
 
     render() {
-        let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-        let currentDate = new Date()
-        let currentDay = days[currentDate.getDay()]
-        console.log(currentDay);
-        
+
         return (
             <BrowserRouter>
                 <div className="proposals-wrapper">
@@ -28,7 +27,9 @@ class Proposals extends React.Component {
                             render={ props => 
                                 <ProposalsList 
                                     day={props.match.params.day} 
-                                    proposals = {this.props.proposals} /> } />
+                                    proposals = {this.props.proposals}
+                                    hospitals = {this.props.hospitals} 
+                                    isAdmin={this.props.isAdmin} /> } />
                     </Switch>
                     
                 </div>
@@ -39,11 +40,14 @@ class Proposals extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    proposals: state.proposalsReducer.proposals
+    proposals: state.proposalsReducer.proposals,
+    hospitals: state.adminReducer.hospitals,
+    isAdmin: state.user.isAdmin
 })
 
 const mapDispatchToProps = dispatch => ({
-    loadProposals: () => dispatch(loadProposals())
+    loadProposals: () => dispatch(loadProposals()),
+    getHospitals: city => dispatch(getHospitalsActionCreator(city)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Proposals)
