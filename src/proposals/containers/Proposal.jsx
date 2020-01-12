@@ -46,7 +46,7 @@ class Proposal extends React.Component {
     getLikeButton(liked) {
         if (liked) {
             return (
-               <FaThumbsUp style={{margin: "0 20px", color: "yellow"}}/>
+               <FaThumbsUp style={{marginLeft: " 20px", color: "yellow"}}/>
             )
         }
         return (
@@ -58,10 +58,10 @@ class Proposal extends React.Component {
         let { proposal, isAdmin, hospitals, userId } = this.props
         let start = new Date(proposal.startDateAndTime)
         let end = new Date(proposal.endDateAndTime)
-        let likes = proposal.userIdsWhoVotedThisProposal.length
+        let likesCnt = proposal.userIdsWhoVotedThisProposal.length
         let liked = proposal.userIdsWhoVotedThisProposal.filter(id => id == userId).length > 0
         let likeButton = this.getLikeButton(liked)
-
+        let likes = likesCnt === 1 ? "1 like" : `${likesCnt} likes`
         return (
             <div className="proposal">
                 <ProposalModal
@@ -81,10 +81,11 @@ class Proposal extends React.Component {
                             <Col md={4} xs={4} lg={4} style={{textAlign: 'right'}}>
                                 <Card.Link href="#" onClick={() => this.toggleModal() }> <FaEdit /> </Card.Link>
                                 <Card.Link href="#" onClick={() => this.deleteProposal()}> <FaTrash /> </Card.Link>
-                                { likeButton }
                                 {isAdmin &&
                                     <Card.Link href="#" onClick={() => this.acceptProposal()}> <FaCheck /> </Card.Link>
                                 }
+                                { likeButton }
+                                
                             </Col>
                         </Row>
                     </Card.Header>
@@ -96,7 +97,7 @@ class Proposal extends React.Component {
                             </Card.Subtitle>
 
                             <FaThumbsUp className="proposal-icon"/>
-                            <Card.Subtitle className="mb-2 text-muted"> {likes} likes </Card.Subtitle>
+                            <Card.Subtitle className="mb-2 text-muted"> {likes} </Card.Subtitle>
 
                             <FaTags className="proposal-icon" />
                             <Card.Subtitle className="mb-2 text-muted"> {proposal.category} </Card.Subtitle>

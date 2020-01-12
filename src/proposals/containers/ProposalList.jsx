@@ -34,10 +34,11 @@ class ProposalsList extends React.Component {
 
     filterProposals() {
         let { day, proposals } = this.props
-        return proposals.filter(proposal => {
+        proposals = proposals.filter(proposal => {
             let proposalDate = new Date(proposal.startDateAndTime)
             return this.days[day] === proposalDate.getDay()
         })
+        return proposals.sort((x, y) => y.userIdsWhoVotedThisProposal.length - x.userIdsWhoVotedThisProposal.length)
     }
 
     createProposal(proposal) {
